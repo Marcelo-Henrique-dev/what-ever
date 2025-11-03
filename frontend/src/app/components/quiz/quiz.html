@@ -1,0 +1,250 @@
+<div class="container mt-4">
+  <div class="row" *ngIf="!quizStarted && !quizCompleted">
+    <div class="col-md-8 mx-auto">
+      <div class="card">
+        <div class="card-header bg-success text-white">
+          <h4><i class="bi bi-gear"></i> Configurar Quiz</h4>
+        </div>
+        <div class="card-body">
+          <form #quizForm="ngForm" (ngSubmit)="startQuiz(quizForm.valid || false)">
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="player" class="form-label">Jogador</label>
+                <select 
+                  class="form-select" 
+                  id="player" 
+                  name="player" 
+                  [(ngModel)]="selectedPlayerId"
+                  required>
+                  <option value="">Selecione um jogador</option>
+                  <option *ngFor="let p of players" [value]="p.id">{{ p.nome }}</option>
+                </select>
+              </div>
+              
+              <div class="col-md-6 mb-3">
+                <label for="amount" class="form-label">Número de Perguntas</label>
+                <select 
+                  class="form-select" 
+                  id="amount" 
+                  name="amount" 
+                  [(ngModel)]="quizConfig.amount"
+                  required>
+                  <option value="5">5 perguntas</option>
+                  <option value="10">10 perguntas</option>
+                  <option value="15">15 perguntas</option>
+                  <option value="20">20 perguntas</option>
+                </select>
+              </div>
+            </div>
+            
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="category" class="form-label">Categoria</label>
+                <select 
+                  class="form-select" 
+                  id="category" 
+                  name="category" 
+                  [(ngModel)]="quizConfig.category">
+                  <option value="">Todas as categorias</option>
+                  <option value="9">Conhecimento Geral</option>
+                  <option value="10">Livros</option>
+                  <option value="11">Filmes</option>
+                  <option value="12">Música</option>
+                  <option value="13">Teatro</option>
+                  <option value="14">Televisão</option>
+                  <option value="15">Video Games</option>
+                  <option value="16">Tabuleiro Games</option>
+                  <option value="17">Ciência e Natureza</option>
+                  <option value="18">Computadores</option>
+                  <option value="19">Matemática</option>
+                  <option value="20">Mitologia</option>
+                  <option value="21">Esportes</option>
+                  <option value="22">Geografia</option>
+                  <option value="23">História</option>
+                  <option value="24">Política</option>
+                  <option value="25">Arte</option>
+                  <option value="26">Celebridades</option>
+                  <option value="27">Animais</option>
+                  <option value="28">Veículos</option>
+                  <option value="29">Histórias em Quadrinhos</option>
+                  <option value="30">Gadgets</option>
+                  <option value="31">Anime e Mangá</option>
+                  <option value="32">Desenhos Animados</option>
+                </select>
+              </div>
+              
+              <div class="col-md-6 mb-3">
+                <label for="difficulty" class="form-label">Dificuldade</label>
+                <select 
+                  class="form-select" 
+                  id="difficulty" 
+                  name="difficulty" 
+                  [(ngModel)]="quizConfig.difficulty">
+                  <option value="">Qualquer dificuldade</option>
+                  <option value="easy">Fácil</option>
+                  <option value="medium">Médio</option>
+                  <option value="hard">Difícil</option>
+                </select>
+              </div>
+            </div>
+            
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="type" class="form-label">Tipo de Pergunta</label>
+                <select 
+                  class="form-select" 
+                  id="type" 
+                  name="type" 
+                  [(ngModel)]="quizConfig.type">
+                  <option value="">Todos os tipos</option>
+                  <option value="multiple">Múltipla escolha</option>
+                  <option value="boolean">Verdadeiro/Falso</option>
+                </select>
+              </div>
+            </div>
+            
+            <div class="d-grid gap-2">
+              <button 
+                type="submit" 
+                class="btn btn-success btn-lg"
+                [disabled]="quizForm.invalid || loading">
+                <i class="bi bi-play-circle"></i> Iniciar Quiz
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row" *ngIf="quizStarted && !quizCompleted">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header bg-info text-white">
+          <div class="d-flex justify-content-between align-items-center">
+            <h5><i class="bi bi-question-circle"></i> Pergunta {{ currentQuestionIndex + 1 }} de {{ questions.length }}</h5>
+            <span class="badge bg-light text-dark">Pontuação: {{ currentScore }}</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <div *ngIf="loading" class="text-center">
+            <div class="spinner-border" role="status">
+              <span class="visually-hidden">Carregando...</span>
+            </div>
+          </div>
+          
+          <div *ngIf="!loading && currentQuestion">
+            <div class="mb-4">
+              <span class="badge bg-secondary me-2">{{ currentQuestion.category }}</span>
+              <span class="badge bg-warning text-dark">{{ getDifficultyText(currentQuestion.difficulty) }}</span>
+            </div>
+            
+            <div class="question-text mb-4">
+              <h5 [innerHTML]="currentQuestion.question"></h5>
+            </div>
+            
+            <div class="answers">
+              <div class="list-group">
+                <button 
+                  *ngFor="let answer of currentAnswers; let i = index"
+                  class="list-group-item list-group-item-action"
+                  [class.active]="selectedAnswer === answer"
+                  (click)="selectAnswer(answer)">
+                  <span class="me-2">{{ getLetter(i) }}.</span>
+                  <span [innerHTML]="answer"></span>
+                </button>
+              </div>
+            </div>
+            
+            <div class="mt-4 d-flex justify-content-between">
+              <button 
+                class="btn btn-secondary"
+                (click)="previousQuestion()"
+                [disabled]="currentQuestionIndex === 0">
+                <i class="bi bi-arrow-left"></i> Anterior
+              </button>
+              
+              <button 
+                class="btn btn-primary"
+                (click)="nextQuestion()"
+                [disabled]="!selectedAnswer">
+                {{ currentQuestionIndex === questions.length - 1 ? 'Finalizar' : 'Próxima' }}
+                <i class="bi bi-arrow-right"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row" *ngIf="quizCompleted">
+    <div class="col-md-8 mx-auto">
+      <div class="card">
+        <div class="card-header bg-warning text-dark">
+          <h4><i class="bi bi-trophy"></i> Quiz Concluído!</h4>
+        </div>
+        <div class="card-body text-center">
+          <h2 class="mb-4">Parabéns, {{ selectedPlayer?.nome }}!</h2>
+          
+          <div class="row mb-4">
+            <div class="col-md-4">
+              <div class="card bg-primary text-white">
+                <div class="card-body">
+                  <h3>{{ currentScore }}</h3>
+                  <p class="mb-0">Pontuação Final</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card bg-success text-white">
+                <div class="card-body">
+                  <h3>{{ correctAnswers }}</h3>
+                  <p class="mb-0">Respostas Corretas</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card bg-info text-white">
+                <div class="card-body">
+                  <h3>{{ questions.length }}</h3>
+                  <p class="mb-0">Total de Perguntas</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="alert alert-info">
+            <h5>Estatísticas:</h5>
+            <p>Taxa de acerto: {{ getAccuracyRate() }}%</p>
+            <p>Pontuação média por pergunta: {{ getAverageScore() }}</p>
+          </div>
+          
+          <div class="d-grid gap-2">
+            <button class="btn btn-success" (click)="newQuiz()">
+              <i class="bi bi-arrow-clockwise"></i> Novo Quiz
+            </button>
+            <button class="btn btn-primary" routerLink="/ranking">
+              <i class="bi bi-trophy"></i> Ver Ranking
+            </button>
+            <button class="btn btn-secondary" routerLink="/home">
+              <i class="bi bi-house"></i> Página Inicial
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="position-fixed top-0 end-0 p-3" style="z-index: 11">
+  <div class="toast show" role="alert" *ngIf="message">
+    <div class="toast-header" [ngClass]="messageType === 'success' ? 'bg-success text-white' : 'bg-danger text-white'">
+      <strong class="me-auto">Notificação</strong>
+      <button type="button" class="btn-close" data-bs-dismiss="toast" (click)="clearMessage()"></button>
+    </div>
+    <div class="toast-body">
+      {{ message }}
+    </div>
+  </div>
+</div>

@@ -1,0 +1,35 @@
+.question-text {
+  background-color: #f8f9fa;
+  padding: 1.5rem;
+  border-radius: 10px;
+  border-left: 4px solid #0d6efd;
+}
+
+.answers .list-group-item {
+  cursor: pointer;
+  border: 1px solid #dee2e6;
+  margin-bottom: 0.5rem;
+  border-radius: 8px;
+  transition: all 0.2s ease-in-out;
+}
+
+.answers .list-group-item:hover {
+  background-color: #e9ecef;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.answers .list-group-item.active {
+  background-color: #198754;
+  border-color: #198754;
+  color: white;
+}
+
+.spinner-border {
+  width: 3rem;
+  height: 3rem;
+}
+
+.toast {
+  min-width: 300px;
+}
