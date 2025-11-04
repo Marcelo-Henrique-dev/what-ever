@@ -35,6 +35,7 @@ public class PlayerService implements IPlayerService {
 
     @Override
     public Player findById(Long id) {
+        // Fazer tratamento se o id for null
         return playerRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Player não encontrado com o ID: " + id));
     }
@@ -63,6 +64,7 @@ public class PlayerService implements IPlayerService {
     @Override
     public void delete(Long id) {
         findById(id); // Valida se existe
+        // Fazer tratamento se o id for null
         playerRepository.deleteById(id);
     }
 

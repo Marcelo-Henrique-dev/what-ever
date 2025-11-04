@@ -27,19 +27,21 @@ public class WhatEverPerformance {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
 
+        // resolver se o pageable retornar null, fazer tratamento do null
         var players = playerRepository.findAll(pageable);
         stopWatch.stop();
-
+        
         System.out.println("Tempo gasto com paginação: " + stopWatch.getTotalTimeMillis() + " ms");
         return ResponseEntity.ok(players);
     }
-
+    
     @Cacheable(value = "playersWithoutPagination", key = "#pageable.pageNumber + '-' + #pageable.pageSize + '-' + #pageable.sort.toString()")
     @GetMapping("/cache")
     public ResponseEntity<Page<Player>> listaComCache(Pageable pageable){
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
-
+        
+        // resolver se o pageable retornar null, fazer tratamento do null
         var players = playerRepository.findAll(pageable);
         stopWatch.stop();
 
