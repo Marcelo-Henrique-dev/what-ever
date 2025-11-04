@@ -1,193 +1,335 @@
-# What-Ever Quiz Game
+# 🎮 Whatever - Player Management API
 
-## Descrição
-What-Ever é um jogo de perguntas e respostas interativo desenvolvido com Spring Boot e interface web. O projeto utiliza a API do Open Trivia Database para fornecer uma experiência educativa e divertida aos usuários, permitindo que testem seus conhecimentos em diferentes categorias.
+API REST para gerenciamento de jogadores desenvolvida com Spring Boot 3.5.7 e Java 21.
 
-O Back-end vai fazer somente o ranking dos usuários.
+## 📋 Sobre o Projeto
 
-## Principais Funcionalidades
+Sistema de gerenciamento de jogadores que permite criar, listar, atualizar e deletar informações de players, incluindo suas partidas e pontuações.
 
-### Sistema de Quiz
-- **Perguntas Personalizadas:**
-  - Seleção do número de questões
-  - Escolha de categoria específica
-  - Definição do nível de dificuldade
-  - Opção entre questões múltipla escolha ou verdadeiro/falso
-- **Sistema de Pontuação:**
-  - Cálculo automático de pontos
-  - Feedback imediato após cada resposta
-  - Acompanhamento do progresso
+## 🚀 Tecnologias Utilizadas
 
-### Gerenciamento de Jogadores
-- **Perfil do Jogador:**
-  - Registro e autenticação
-  - Histórico de partidas
-  - Estatísticas detalhadas:
-    - Pontuação total
-    - Recorde pessoal
-    - Média de pontos por jogo
-    - Total de partidas jogadas
-- **Sistema de Ranking:**
-  - Classificação dos melhores jogadores
-  - Visualização de top scores
-
-## Stack Tecnológica
-
-### Backend
-- **Framework:** Spring Boot
-- **Linguagem:** Java 21
-- **APIs:**
-  - RESTful endpoints
-  - Integração com Open Trivia DB
-- **Dependências:**
-  - Lombok para redução de boilerplate
-  - Spring Web para endpoints REST
-  - Spring Data JPA para persistência
+- **Java 21**
+- **Spring Boot 3.5.7**
+  - Spring Data JPA
+  - Spring Web
+  - Spring Validation
   - Spring DevTools
-  - Jarkata Validacion 
+- **H2 Database** - Banco de dados em memória (para desenvolvimento)
+- **Lombok** - Redução de código boilerplate
+- **Maven** - Gerenciamento de dependências
 
-### Frontend
-- **Tecnologias Web:**
-  - HTML5 para estruturação
-  - CSS3 com Bootstrap para estilização
-  - JavaScript para interatividade
-- **Recursos:**
-  - Interface responsiva
-  - Design moderno e intuitivo
-  - Feedback visual em tempo real
+## 📦 Estrutura do Projeto
 
-## API Endpoints
-
-### Quiz (WhatEverController)
 ```
-GET  /whatever/questions - Obtém questões personalizadas
-  Parâmetros:
-  - amount: número de questões
-  - category: categoria desejada
-  - difficulty: nível de dificuldade
-  - type: tipo de questão
-
-POST /whatever/score - Processa e calcula pontuação
-```
-
-### Jogadores (PlayerController)
-```
-POST   /api/players          - Registra novo jogador
-PUT    /api/players/{id}/score - Atualiza pontuação
-GET    /api/players/top      - Lista ranking
-GET    /api/players/{id}     - Busca jogador por ID
-GET    /api/players/by-name/{nome} - Busca por nome
-DELETE /api/players/{id}     - Remove jogador
+src/main/java/com/whatever/
+├── controller/          # Controladores REST
+│   └── PlayerController.java
+├── dto/                # Data Transfer Objects
+│   ├── PlayerRequest.java
+│   ├── PlayerResponse.java
+│   └── PlayerUpdateRequest.java
+├── entity/             # Entidades JPA
+│   └── Player.java
+├── exception/          # Tratamento de exceções
+│   ├── ErrorMessage.java
+│   └── GlobalExceptionHandler.java
+├── mapper/             # Conversão entre DTOs e Entities
+│   └── PlayerMapper.java
+├── performance/        # Testes de performance e seeding
+│   ├── WhatEverPerformance.java
+│   └── WhatEverSeeder.java
+├── repository/         # Repositories JPA
+│   └── PlayerRepository.java
+└── service/            # Lógica de negócio
+    └── PlayerService.java
 ```
 
-## Configuração e Execução
+## ⚙️ Configuração
 
 ### Pré-requisitos
+
 - Java 21 ou superior
-- Maven instalado
-- Conexão com internet (para acesso à API do Open Trivia)
+- Maven 3.6+ (ou usar o wrapper incluído)
 
-### Passos para Execução
+### Banco de Dados
 
-1. Clone o repositório:
-   ```bash
-   git clone [URL_DO_REPOSITORIO]
-   ```
+O projeto utiliza **H2 Database** em memória, então **não é necessário configurar** nenhum banco de dados externo.
 
-2. Navegue até a pasta do projeto:
-   ```bash
-   cd what-ever
-   ```
+### Console H2
 
-3. Execute a aplicação:
-   ```bash
-   ./mvnw spring-boot:run
-   ```
-
-4. Acesse no navegador:
-   ```
-   http://localhost:8080
-   ```
-
-## Guia de Uso
-
-1. **Início do Jogo:**
-   - Acesse a página inicial
-   - Registre-se ou faça login (se necessário)
-
-2. **Configuração da Partida:**
-   - Selecione o número de questões
-   - Escolha a categoria desejada
-   - Defina o nível de dificuldade
-   - Escolha o tipo de questões
-
-3. **Durante o Jogo:**
-   - Leia cada questão cuidadosamente
-   - Selecione sua resposta
-   - Receba feedback imediato
-
-4. **Fim de Jogo:**
-   - Visualize sua pontuação final
-   - Confira sua posição no ranking
-   - Opção de iniciar nova partida
-
-## Estrutura do Projeto
+Acesse o console do H2 em:
 ```
-what-ever/
-├── src/
-│   ├── main/
-│   │   ├── java/br/com/sexteto/What_ever/
-│   │   │   ├── config/
-│   │   │   │   ├── AppConfig.java
-│   │   │   │   └── WebConfig.java
-│   │   │   ├── controller/
-│   │   │   │   ├── PlayerController.java
-│   │   │   │   └── WhatEverController.java
-│   │   │   ├── Exception/
-│   │   │   │   ├── GlobalExceptionHandler.java
-│   │   │   │   └── PlayerAlreadyExistsException.java
-│   │   │   ├── model/
-│   │   │   │   ├── Pergunta.java
-│   │   │   │   ├── Player.java
-│   │   │   │   └── Question.java
-│   │   │   ├── repository/
-│   │   │   │   └── PlayerRepository.java
-│   │   │   ├── service/
-│   │   │   │   ├── PlayerService.java
-│   │   │   │   └── WhatEverService.java
-│   │   │   └── WhatEverApplication.java
-│   │   └── resources/
-│   │       ├── static/
-│   │       │   ├── index.html
-│   │       │   ├── script.js
-│   │       │   └── styles.css
-│   │       └── application.properties
-│   └── test/
-└── pom.xml
+http://localhost:8080/h2-console
 ```
 
-## Contribuição
-Para contribuir com o projeto:
+**Credenciais:**
+- JDBC URL: `jdbc:h2:mem:whatever`
+- Username: `admin`
+- Password: `admin`
 
-1. Faça um fork do repositório
-2. Crie uma branch para sua feature
-   ```bash
-   git checkout -b feature/sua-feature
-   ```
-3. Commit suas alterações
-   ```bash
-   git commit -m 'Adiciona nova feature'
-   ```
-4. Push para a branch
-   ```bash
-   git push origin feature/sua-feature
-   ```
-5. Abra um Pull Request
+### Executando o Projeto
 
-## Licença
-Este projeto está licenciado sob a MIT License.
+**Windows:**
+```bash
+.\mvnw.cmd spring-boot:run
+```
 
-## Equipe
-Desenvolvido pelo Grupo Sexteto como parte do projeto acadêmico.
+**Linux/Mac:**
+```bash
+./mvnw spring-boot:run
+```
+
+Na primeira execução, o seeder criará automaticamente 50 players de exemplo.
+
+## 📡 Endpoints da API
+
+### Base URL
+```
+http://localhost:8080
+```
+
+### Players
+
+| Método   | Endpoint                 | Descrição               |
+| -------- | ------------------------ | ----------------------- |
+| `POST`   | `/players`               | Criar novo player       |
+| `GET`    | `/players/findAll`       | Listar todos os players |
+| `GET`    | `/players/findById/{id}` | Buscar player por ID    |
+| `PUT`    | `/players/update/{id}`   | Atualizar player        |
+| `DELETE` | `/players/delete/{id}`   | Deletar player          |
+
+### Performance
+
+| Método | Endpoint                               | Descrição            |
+| ------ | -------------------------------------- | -------------------- |
+| `GET`  | `/what-ever/performance/com-paginacao` | Listar com paginação |
+| `GET`  | `/what-ever/performance/cache`         | Listar com cache     |
+
+#### Parâmetros de Paginação
+
+Para usar paginação, adicione os seguintes parâmetros na URL:
+
+- **`page`**: Número da página (começa em 0)
+- **`size`**: Quantidade de itens por página
+- **`sort`**: Campo para ordenação (opcional)
+
+**Exemplos:**
+
+```http
+# Primeira página com 10 itens
+GET /what-ever/performance/com-paginacao?page=0&size=10
+
+# Segunda página com 20 itens
+GET /what-ever/performance/com-paginacao?page=1&size=20
+
+# Primeira página ordenada por nome (ascendente)
+GET /what-ever/performance/com-paginacao?page=0&size=10&sort=nome,asc
+
+# Primeira página ordenada por pontuação (descendente)
+GET /what-ever/performance/com-paginacao?page=0&size=10&sort=pontuacao,desc
+
+# Com cache - mesma estrutura
+GET /what-ever/performance/cache?page=0&size=10&sort=nome,asc
+```
+
+**Resposta:**
+```json
+{
+  "content": [
+    {
+      "id": 1,
+      "nome": "Player 1",
+      "partidas": 0,
+      "pontuacao": 0
+    }
+  ],
+  "pageable": {
+    "pageNumber": 0,
+    "pageSize": 10,
+    "sort": {
+      "sorted": true,
+      "unsorted": false,
+      "empty": false
+    }
+  },
+  "totalPages": 5,
+  "totalElements": 50,
+  "last": false,
+  "first": true,
+  "numberOfElements": 10,
+  "size": 10,
+  "number": 0
+}
+```
+
+## 📝 Exemplos de Requisições
+
+### Criar Player
+```http
+POST /players
+Content-Type: application/json
+
+{
+  "nome": "Player Exemplo"
+}
+```
+
+**Resposta (201 Created):**
+```json
+{
+  "message": "Player criado com sucesso!",
+  "data": {
+    "id": 1,
+    "nome": "Player Exemplo",
+    "partidas": 0,
+    "pontuacao": 0
+  }
+}
+```
+
+### Listar Todos os Players
+```http
+GET /players/findAll
+```
+
+**Resposta (200 OK):**
+```json
+{
+  "message": "Lista de players recuperada com sucesso!",
+  "data": [
+    {
+      "id": 1,
+      "nome": "Player Exemplo",
+      "partidas": 10,
+      "pontuacao": 100
+    },
+    {
+      "id": 2,
+      "nome": "Player 2",
+      "partidas": 5,
+      "pontuacao": 50
+    }
+  ]
+}
+```
+
+### Buscar Player por ID
+```http
+GET /players/findById/1
+```
+
+**Resposta (200 OK):**
+```json
+{
+  "message": "Player encontrado com sucesso!",
+  "data": {
+    "id": 1,
+    "nome": "Player Exemplo",
+    "partidas": 0,
+    "pontuacao": 0
+  }
+}
+```
+
+### Atualizar Player
+```http
+PUT /players/update/1
+Content-Type: application/json
+
+{
+  "name": "Player Atualizado",
+  "partidas": 15,
+  "pontuacao": 150
+}
+```
+
+**Resposta (200 OK):**
+```json
+{
+  "message": "Player atualizado com sucesso!",
+  "data": {
+    "id": 1,
+    "nome": "Player Atualizado",
+    "partidas": 15,
+    "pontuacao": 150
+  }
+}
+```
+
+### Deletar Player
+```http
+DELETE /players/delete/1
+```
+
+**Resposta (200 OK):**
+```json
+{
+  "message": "Player deletado com sucesso!"
+}
+```
+
+## ✅ Validações
+
+A API implementa validações automáticas nos DTOs:
+
+### Criação de Player (POST)
+- **Nome**: Obrigatório, entre 3 e 50 caracteres
+- **Partidas**: Iniciado automaticamente com 0
+- **Pontuação**: Iniciado automaticamente com 0
+
+### Atualização de Player (PUT)
+- **Nome**: Obrigatório, entre 3 e 50 caracteres
+- **Partidas**: Não pode ser nulo, mínimo 0
+- **Pontuação**: Não pode ser nulo, mínimo 0
+
+### Exemplo de Erro de Validação
+
+**Requisição Inválida:**
+```json
+{
+  "name": "AB"
+}
+```
+
+**Resposta (400 Bad Request):**
+```json
+{
+  "name": "Nome deve ter entre 3 e 50 caracteres"
+}
+```
+
+## 🔧 Funcionalidades Especiais
+
+### Seeder Automático
+- Na primeira execução, 50 players são criados automaticamente
+- Verifica se já existem dados para evitar duplicação
+
+### Tratamento Global de Exceções
+- Validações de entrada com mensagens personalizadas
+- Tratamento de erros de negócio (IllegalArgumentException)
+- Tratamento de recursos não encontrados (EmptyResultDataAccessException)
+
+### Performance
+- Endpoints para teste de performance com paginação
+- Implementação de cache para otimização de consultas
+
+## 🏗️ Padrões Utilizados
+
+- **DTO Pattern**: Separação entre entidades e objetos de transferência
+- **Mapper Pattern**: Conversão entre DTOs e Entities
+- **Repository Pattern**: Abstração de acesso a dados
+- **Service Layer**: Lógica de negócio separada dos controllers
+- **Global Exception Handler**: Tratamento centralizado de exceções
+
+## 📄 Licença
+
+Este é um projeto de demonstração para fins educacionais.
+
+## 👥 Autores
+
+- **Marcelo Henrique** - Repositório Original
+- **Luanderson** - Branch develop-luanderson
 
 ---
+
+**Status do Projeto:** ✅ Em desenvolvimento - Todas as funcionalidades básicas implementadas
