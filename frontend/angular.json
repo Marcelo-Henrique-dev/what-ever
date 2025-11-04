@@ -50,10 +50,16 @@
         "serve": {
           "builder": "@angular/build:dev-server",
           "configurations": {
-            "production": {"buildTarget": "what-ever:build:production"},
-            "development": {"buildTarget": "what-ever:build:development"}
-          }
+            "production": {
+              "buildTarget": "what-ever:build:production"
+            },
+            "development": {
+              "buildTarget": "what-ever:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
         }
+
       }
     }
   },
