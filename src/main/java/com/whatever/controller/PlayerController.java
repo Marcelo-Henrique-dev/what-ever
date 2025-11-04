@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +21,7 @@ import com.whatever.service.PlayerService;
 
 @RestController
 @RequestMapping("/player")
+@CrossOrigin("*")
 public class PlayerController {
 
     @Autowired
@@ -29,7 +31,7 @@ public class PlayerController {
     public ResponseEntity<String> save(@RequestBody Player player){
         try {
             String retorno = this.playerService.save(player);
-            return new ResponseEntity<>(retorno, HttpStatus.CREATED);
+            return new ResponseEntity<>(retorno, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
