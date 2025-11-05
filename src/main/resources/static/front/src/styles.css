@@ -25,8 +25,28 @@ html, body{
     align-items: center;
 }
 
+.justify-center{
+    justify-content: center;
+}
+
+.align-center{
+    align-items: center;
+}
+
+.justify-between{
+    justify-content: space-between;
+}
+
 .w100{
     width: 100%;
+}
+
+.w50{
+    width: 50%;
+}
+
+.w33{
+    width: 30%;
 }
 
 .direction-col{

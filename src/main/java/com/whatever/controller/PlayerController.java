@@ -27,6 +27,7 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/players")
+@CrossOrigin("*")
 public class PlayerController {
 
     private final IPlayerService playerService;
@@ -36,7 +37,7 @@ public class PlayerController {
         this.playerService = playerService;
     }
 
-    @PostMapping
+    @PostMapping("/save")
     public ResponseEntity<ApiResponse<PlayerResponse>> save(@RequestBody @Valid PlayerRequest playerRequest) {
         Player player = PlayerMapper.toModel(playerRequest);
         Player savedPlayer = playerService.create(player);

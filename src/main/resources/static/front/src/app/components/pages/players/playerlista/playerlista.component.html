@@ -1,0 +1,57 @@
+<div class="container flex direction-col align-center">
+    <div class="title">
+        Jogadores
+    </div>
+    <div class="line w100"></div>
+    <div class="players-container w100 flex align-center justify-between">
+        @if(isLoading){
+            <div class="w100 flex center"><img class="loading" src="loading.gif"></div>
+        }@else{
+            @if(lista.length>=1){
+                @for(player of lista; track $index){
+                    <div class="player-card w33">
+                        <h1>{{player.nome}}</h1>
+                        <div class="line"></div>
+                        <div class="infos-container flex justify-between align-center">
+                            <div class="pt-containers w50">
+                                <div class="flex justify-between box-pt pontuacao-container">
+                                    <p>Pontuação:</p>
+                                    <p>{{player.pontuacao}}</p>
+                                </div>
+                                <div class="flex justify-between box-pt partidas-container">
+                                    <p>Partidas Jogadas:</p>
+                                    <p>{{player.partidas}}</p>
+                                </div>
+                            </div>
+                            <div class="btn-container">
+                                <div class="choose">
+                                    <button
+                                        class="choose"
+                                    >
+                                        Escolher
+                                    </button>
+                                </div>
+                                <div class="actions">
+                                    <button
+                                        class="edit"
+                                        (click)="editar(player)"
+                                    >
+                                        Editar
+                                    </button>
+                                    <button
+                                        class="delete"
+                                    >
+                                        Deletar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            @else{
+
+            }
+        }
+    </div>
+</div>

@@ -1,9 +1,9 @@
 <nav>
     <div class="container">
         <ul>
-            <li><a class="selected" href="/home"><i class="fas- fa-solid fa-gamepad"></i> What-ever Quiz</a></li>
-            <li><a href="/player"><i class="fas fa-user-plus"></i> Jogador</a></li>
-            <li><a href="/rank"><i class="fas fa-solid fa-trophy"></i> Ranking</a></li>
+            <li><a routerLink="/home" class="menuBtn" routerLinkActive="selected" [routerLinkActiveOptions]="{exact: true}"><i class="fas- fa-solid fa-gamepad"></i> What-ever Quiz</a></li>
+            <li><a routerLink="/register-player" routerLinkActive="selected" [routerLinkActiveOptions]="{exact: true}" class="menuBtn"><i class="fas fa-user-plus"></i> Jogador</a></li>
+            <li><a routerLink="/ranking" routerLinkActive="selected" [routerLinkActiveOptions]="{exact: true}" class="menuBtn"><i class="fas fa-solid fa-trophy"></i> Ranking</a></li>
         </ul>
     </div>
 </nav>

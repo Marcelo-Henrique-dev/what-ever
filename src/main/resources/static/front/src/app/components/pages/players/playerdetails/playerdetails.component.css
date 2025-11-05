@@ -1,0 +1,68 @@
+.container{
+    text-align: center;
+    min-height: calc(100vh - 59px);
+    form{
+        padding: 40px 0;
+        background-color: white;
+        gap: 30px;
+        border-radius: 20px;
+        box-shadow: 0 3px 10px rgba(119, 0, 255, 0.4);
+        .title{
+            font-size: 2.6rem;
+            font-weight: bold;
+            background: linear-gradient(to right, var(--bg-secondary), var(--bg-primary), var(--bg-card-secondary));
+            background-clip: text;
+            color: transparent;
+        }
+        .input-container{
+            width: 90%;
+            position: relative;
+            input[type=text]{
+                background-color: transparent;
+                border: 1px solid var(--bg-secondary);
+                width: 100%;
+                line-height: 2.5rem;
+                border-radius: 10px;
+                outline: none;
+                padding-left: 1rem;
+                font-size: 1.2rem;
+            }
+            label{
+                position: absolute;
+                left: 1rem;
+                top: 10px;
+                font-size: 1.2rem;
+                color: var(--bg-secondary);
+                transition: .3s;
+            }
+            input[type=text]:focus ~ label{
+                top: -10px;
+                font-size: .9rem;
+                background-color: white;
+                padding-right: 5px;
+                padding-left: 2px;
+            }
+            input[type=text]:valid ~ label{
+                top: -10px;
+                font-size: .9rem;
+                background-color: white;
+                padding-right: 5px;
+                padding-left: 2px;
+                color: green;
+            }
+            input[type=text]:valid{
+                border-color: green;
+            }
+        }
+        button{
+            width: 30%;
+            background: linear-gradient(to right, var(--bg-secondary), var(--bg-primary), var(--bg-card-secondary));
+            color: white;
+            padding: 10px 0;
+            cursor: pointer;
+            border: 0;
+            border-radius: 30px;
+            font-size: 1.3rem;
+        }
+    }
+}

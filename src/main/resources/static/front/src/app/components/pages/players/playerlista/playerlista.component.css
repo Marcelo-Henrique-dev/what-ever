@@ -1,0 +1,80 @@
+.container{
+    max-width: 1444px;
+    background-color: white;
+    padding: 10px 2%;
+    gap: 20px;
+    min-height: calc(100vh - 59px);
+    .title{
+        font-size: 2rem;
+        font-weight: bold;
+        background: linear-gradient(to right, var(--bg-secondary), var(--bg-primary), var(--bg-card-secondary));
+        background-clip: text;
+        color: transparent;
+    }
+    .line{
+        height: 2px;
+        background: linear-gradient(to right, var(--bg-secondary), var(--bg-primary), var(--bg-card-secondary));
+    }
+    .players-container{
+        height: 100%;
+        flex-wrap: wrap;
+        .w100{
+            min-height: calc(100vh - 160px);
+            img.loading{
+                width: 60px;
+            }
+        }
+        .player-card{
+            border-radius: 10px;
+            padding: 10px 2%;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
+            h1{
+                color: var(--bg-primary);
+            }
+            .infos-container{
+                .pt-containers{
+                    .box-pt{
+                        padding: 10px 0;
+                        p{
+                            color: var(--bg-secondary);
+                        }
+                    }
+                }
+                .btn-container{
+                    .choose{
+                        width: 100%;
+                        padding: 2px 0;
+                    }
+                    .actions{
+                        button{
+                            margin: 0 2px;
+                        }
+                    }
+                    button{
+                        border: 0;
+                        height: 40px;
+                        color: white;
+                        font-weight: bold;
+                        border-radius: 20px;
+                        padding: 0 10px;
+                        transition: .6s;
+                        background-color: var(--btn-bg);
+                        cursor: pointer;
+                    }
+                    button:hover{
+                        background-color: var(--btn-bg-hover);
+                    }
+                    button.choose{
+                        background: linear-gradient(to right, var(--bg-secondary), var(--bg-primary), var(--bg-card-secondary));
+                    }
+                    button.edit{
+                        background: linear-gradient(to right, rgb(255, 166, 0), rgb(253, 180, 45));
+                    }
+                    button.delete{
+                        background: linear-gradient(to right, rgb(248, 27, 27), rgb(202, 2, 2));
+                    }
+                }
+            }
+        }
+    }
+}

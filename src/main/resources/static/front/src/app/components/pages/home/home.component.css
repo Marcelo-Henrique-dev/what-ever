@@ -19,7 +19,7 @@
             width: 90%;
         }
         button{
-            background-color: rgb(43, 153, 43);
+            background-color: var(--btn-bg);
             border: none;
             padding: 20px 2%;
             color: white;
@@ -31,7 +31,7 @@
         }
         button:hover{
             transform: scale(1.02);
-            background-color: rgb(34, 134, 34);
+            background-color: var(--btn-bg-hover);
         }
     }
 }
