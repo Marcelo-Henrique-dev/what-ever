@@ -2,6 +2,7 @@ package com.whatever.performance;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -31,11 +32,18 @@ public class WhatEverSeeder implements CommandLineRunner {
 
         System.out.println("Iniciando o gerador de seed");
 
+        Random random = new Random();
+        int pontuacaoRandom;
+        int partidas;
+
+        
         for (int i = 0; i < 150; i++) {
+            pontuacaoRandom = random.nextInt(0, 50);
+            partidas = random.nextInt(0, 10);
             Player player = new Player();
             player.setNome("Player " + (i + 1));
-            player.setPartidas(0);
-            player.setPontuacao(0);
+            player.setPartidas(partidas);
+            player.setPontuacao(pontuacaoRandom);
             players.add(player);
         }
 
