@@ -5,14 +5,15 @@
     gap: 20px;
     min-height: calc(100vh - 59px);
     .title{
-        font-size: 2rem;
+        font-size: 3rem;
         font-weight: bold;
-        background: linear-gradient(to right, var(--bg-secondary), var(--bg-primary), var(--bg-card-secondary));
+        background-color: var(--bg-primary);
         background-clip: text;
         color: transparent;
     }
     .line{
         height: 2px;
+        margin: 5px 0px;
         background: linear-gradient(to right, var(--bg-secondary), var(--bg-primary), var(--bg-card-secondary));
     }
     .players-container{
@@ -28,6 +29,7 @@
             border-radius: 10px;
             padding: 10px 2%;
             box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
+            margin: 20px 0;
             h1{
                 color: var(--bg-primary);
             }
@@ -60,20 +62,45 @@
                         transition: .6s;
                         background-color: var(--btn-bg);
                         cursor: pointer;
+                        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
                     }
                     button:hover{
                         background-color: var(--btn-bg-hover);
                     }
                     button.choose{
-                        background: linear-gradient(to right, var(--bg-secondary), var(--bg-primary), var(--bg-card-secondary));
+                        background-color: var(--bg-secondary);
                     }
                     button.edit{
-                        background: linear-gradient(to right, rgb(255, 166, 0), rgb(253, 180, 45));
+                        background-color: gray;
                     }
                     button.delete{
-                        background: linear-gradient(to right, rgb(248, 27, 27), rgb(202, 2, 2));
+                        background-color: red;
                     }
                 }
+            }
+        }
+    }
+    .page-control{
+        width: 50%;
+        button{
+            background-color: var(--bg-primary);
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: none;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        .pages-container{
+            width: 90%;
+            gap: 20px;
+            button.selected{
+                background-color: var(--bg-card-secondary);
+                transition: .6s;
+            }
+            button.selected:hover{
+                background-color: var(--bg-card-secondary);
             }
         }
     }

@@ -50,8 +50,46 @@
                 }
             }
             @else{
-
+                <!-- exibir sem players -->
             }
         }
     </div>
+    <div class="page-control flex justify-between">
+        <button
+            class="voltar"
+            (click)="voltarPagina()"
+        >
+            <i class="fas fa-solid fa-arrow-left"></i>
+        </button>
+        <div class="pages-container flex align-center justify-center ">
+            @if(pages.length <= 0){
+                <!-- exibir sem paginas -->
+            }
+            @else{
+                @for(page of pages; track $index){
+                    <!-- 
+                        se for o último elemento, ele aumenta o valor que exibe e na mesma hora apaga todos os anteriores àquele valor
+                    -->
+                    @if($index <= 5){
+                        @if($index == pageNumber){
+                            <button class="selected">
+                                {{$index+1}}
+                            </button>
+                        }@else{
+                            <button>
+                                {{$index+1}}
+                            </button>
+                        }
+                    }
+                }
+            }
+        </div>
+        <button
+            class="avancar"
+            (click)="avancarPagina()"
+        >
+            <i class="fas fa-solid fa-arrow-right"></i>
+        </button>
+    </div>
 </div>
+

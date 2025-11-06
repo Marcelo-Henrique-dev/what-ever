@@ -37,7 +37,7 @@ public class PlayerController {
         this.playerService = playerService;
     }
 
-    @PostMapping("/save")
+    @PostMapping
     public ResponseEntity<ApiResponse<PlayerResponse>> save(@RequestBody @Valid PlayerRequest playerRequest) {
         Player player = PlayerMapper.toModel(playerRequest);
         Player savedPlayer = playerService.create(player);

@@ -21,7 +21,6 @@ public class WhatEverSeeder implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        /* 
         // Verifica se já existem players no banco para evitar duplicação
         if (playerRepository.count() > 0) {
             System.out.println("Seed já foi executado anteriormente. Pulando...");
@@ -32,17 +31,16 @@ public class WhatEverSeeder implements CommandLineRunner {
 
         System.out.println("Iniciando o gerador de seed");
 
-        for (int i = 0; i < 1500; i++) {
+        for (int i = 0; i < 150; i++) {
             Player player = new Player();
             player.setNome("Player " + (i + 1));
-            player.setPartidas(i);
-            player.setPontuacao(i);
+            player.setPartidas(0);
+            player.setPontuacao(0);
             players.add(player);
         }
 
         playerRepository.saveAll(players);
         System.out.println("Finalizando o gerador de seed - " + players.size() + " players criados");
-        */
     }
 
 
