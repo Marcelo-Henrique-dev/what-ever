@@ -18,6 +18,10 @@ export class PlayerService {
   findAll(page: number, size: number): Observable<PageResponse<Player>>{
     return this.http.get<PageResponse<Player>>(this.API_PERFORMANCE+"/cache?page="+page+"&size="+size);
   }
+  
+  findAllRank(): Observable<ApiResnponse<Player[]>>{
+    return this.http.get<ApiResnponse<Player[]>>(this.API+"/findAll");
+  }
 
   findById(id: number): Observable<ApiResnponse<Player>>{
     return this.http.get<ApiResnponse<Player>>(this.API+"/findById/"+id);

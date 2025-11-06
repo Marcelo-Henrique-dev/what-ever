@@ -27,7 +27,10 @@ export class PlayerlistaComponent {
   readonly bufferPages = 3;
 
   constructor(){
-    this.listPlayers();
+    if(this.listPlayers.length<=0){
+      this.listPlayers();
+      this.firstLoad = false;
+    }
   }
 
   listPlayers(){
@@ -35,7 +38,7 @@ export class PlayerlistaComponent {
       next: (response) => {
         this.lista = response.content;
         this.pageNumber = response.number;
-        if(this.firstLoad && this.pages.length === 0){
+        if(this.pages.length === 0){
           for(let i = 0; i<response.totalPages; i++){
             this.pages.push(i);
           }
@@ -71,7 +74,6 @@ export class PlayerlistaComponent {
     }else{
       this.page++;
       this.listPlayers();
-      this.firstLoad = false;
     }
   }
   
@@ -87,7 +89,6 @@ export class PlayerlistaComponent {
   irParaPagina(page: number){
     this.page = page;
     this.listPlayers();
-    this.firstLoad = false;
   }
 
   adjustStartPage(){

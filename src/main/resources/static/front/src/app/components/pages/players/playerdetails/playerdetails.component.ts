@@ -29,11 +29,6 @@ export class PlayerdetailsComponent {
     if(this.player.id > 0){
       this.playerService.update(this.player, this.player.id).subscribe({
         next: (response) => {
-          Swal.fire({
-            title: response.message,
-            icon: "success",
-            confirmButtonText: "Ok"
-          })
           this.router.navigate(["/lista-jogadores"])
         },
         error: (error) => {
@@ -71,11 +66,6 @@ export class PlayerdetailsComponent {
     this.playerService.findById(id).subscribe({
       next: (response) => {
         this.player = response.data;
-        Swal.fire({
-          title: "Player carregado",
-          icon: "success",
-          confirmButtonText: "Ok"
-        })
       },
       error: (error) => {
         Swal.fire({
