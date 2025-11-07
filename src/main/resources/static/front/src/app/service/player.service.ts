@@ -35,4 +35,8 @@ export class PlayerService {
     return this.http.put<ApiResnponse<Player>>(this.API+"/update/"+id, player);
   }  
 
+  delete(id: number): Observable<ApiResnponse<void>>{
+    return this.http.delete<ApiResnponse<void>>(this.API+"/delete/"+id);
+  }
+
 }

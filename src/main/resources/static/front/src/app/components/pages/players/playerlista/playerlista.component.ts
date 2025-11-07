@@ -65,6 +65,38 @@ export class PlayerlistaComponent {
     this.router.navigate(["/register-player", player.id]);
   }
 
+  deletar(id: number){
+    Swal.fire({
+      title: "Tem certeza?",
+      icon: "warning",
+      showConfirmButton: true,
+      showCancelButton: true,
+      confirmButtonText: "Sim",
+      cancelButtonText: "Cancelar"
+    }).then((resposta) => {
+      if(resposta.isConfirmed){
+        this.playerService.delete(id).subscribe({
+          next: (response) =>{
+            Swal.fire({
+              title: response.message,
+              icon: "success",
+              confirmButtonText: "Ok"
+            });
+            this.listPlayers();
+          },
+          error: (error) =>{
+            Swal.fire({
+              title: "Erro ao apagar Jogador",
+              text: error,
+              icon: "error",
+              confirmButtonText: "Ok"
+            })
+          }
+        });
+      }
+    })
+  }
+
   avancarPagina(){
     if(this.page == this.pages.length-1){
       return;
@@ -114,6 +146,8 @@ export class PlayerlistaComponent {
     if (this.startPage < 0) {
       this.startPage = 0;
     }
-}
+  }
 
 }
+
+
