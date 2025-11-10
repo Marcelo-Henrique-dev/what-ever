@@ -3,6 +3,7 @@ import { Player } from '../../../../models/player';
 import { PlayerService } from '../../../../service/player.service';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
+import { state } from '@angular/animations';
 
 @Component({
   selector: 'app-playerlista',
@@ -146,6 +147,12 @@ export class PlayerlistaComponent {
     if (this.startPage < 0) {
       this.startPage = 0;
     }
+  }
+
+  escolher(id: number){
+    this.router.navigate(["/quiz"],{
+      state: {id: id}
+    });
   }
 
 }

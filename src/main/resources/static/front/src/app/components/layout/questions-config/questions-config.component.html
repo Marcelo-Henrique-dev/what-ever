@@ -1,0 +1,35 @@
+<form class="w100 flex direction-col justify-between align-center">
+    <div class="title-container flex justify-between w100 align-center">
+        <h2>Configurações do Quiz</h2>
+        <p>{{playerSelecionado.nome}}</p>
+    </div>
+    <div class="input-container">
+        <input [(ngModel)]="quizConfig.amount" class="w100" required type="number" name="amount" id="amount">
+        <label for="amount">Quantas questões?</label>
+    </div>
+    <select [(ngModel)]="quizConfig.category" name="category" id="category">
+        <option value="" seleted disabled>Selecionar Categoria</option>
+        <option value="">Todas as Categorias</option>
+        @for(categoria of categorias; track $index){
+            <option value={{categoria.id}}>{{categoria.name}}</option>
+        }
+    </select>
+    <select [(ngModel)]="quizConfig.difficulty" name="category" id="category">
+        <option value="" selected disabled>Dificuldade</option>
+        <option value="">Todas</option>
+        <option value="easy">Fácil</option>
+        <option value="medium">Médio</option>
+        <option value="hard">Difícil</option>
+    </select>
+    <select [(ngModel)]="quizConfig.type" name="type" id="type">
+        <option value="" selected disabled>Selecionar o Tipo</option>
+        <option value="multiple">Múltipla escolha</option>
+        <option value="boolean">V ou F</option>
+    </select>
+    <button
+        type="submit"
+    >
+        <i class="fas fa-solid fa-play"></i>
+        Iniciar
+    </button>
+</form>

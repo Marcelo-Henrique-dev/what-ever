@@ -1,0 +1,17 @@
+.container{
+    background-color: white;
+    min-height: calc(100vh - 59px);
+    padding: 20px 2%;
+    gap: 20px;
+    .title{
+        background: linear-gradient(to right, var(--bg-secondary), var(--bg-primary), var(--bg-card-secondary));
+        font-size: 3rem;
+        font-weight: bold;
+        background-clip: text;
+        color: transparent;
+    }
+    .line{
+        background: linear-gradient(to right, var(--bg-secondary), var(--bg-primary), var(--bg-card-secondary));
+        height: 2px;
+    }
+}

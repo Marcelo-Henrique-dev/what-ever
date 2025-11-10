@@ -12,8 +12,8 @@ export class PlayerService {
 
   http = inject(HttpClient)
 
-  API = "http://localhost:8080/players";
-  API_PERFORMANCE = "http://localhost:8080/what-ever/performance";
+  API = "http://localhost:8081/players";
+  API_PERFORMANCE = "http://localhost:8081/what-ever/performance";
 
   findAll(page: number, size: number): Observable<PageResponse<Player>>{
     return this.http.get<PageResponse<Player>>(this.API_PERFORMANCE+"/com-paginacao?page="+page+"&size="+size);
