@@ -1,0 +1,35 @@
+.container{
+    background-color: white;
+    padding: 20px 2%;
+    min-height: calc(100vh - 59px);
+    gap: 20px;
+    .title{
+        background: linear-gradient(to right, var(--bg-secondary), var(--bg-primary), var(--bg-card-secondary));
+        background-clip: text;
+        font-size: 3rem;
+        font-weight: bold;
+        color: transparent;
+    }
+    .line{
+        height: 2px;
+        background: linear-gradient(to right, var(--bg-secondary), var(--bg-primary), var(--bg-card-secondary));
+    }
+    table{
+        border-collapse: collapse;
+        thead{
+            background-color: #ccc;
+            tr{
+                height: 50px;
+            }
+        }
+        tbody{
+            text-align: center;
+            tr{
+                height: 30px;
+            }
+            tr:nth-child(even){
+                background-color: #eee;
+            }
+        }
+    }
+}

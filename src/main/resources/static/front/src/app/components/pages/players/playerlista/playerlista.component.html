@@ -1,0 +1,114 @@
+<div class="container flex direction-col align-center">
+    <div class="title">
+        Jogadores
+    </div>
+    <div class="line w100"></div>
+    <div class="players-container w100 flex align-center justify-between">
+        @if(isLoading){
+            <div class="w100 flex center"><img class="loading" src="loading.gif"></div>
+        }@else{
+            @if(lista.length>=1){
+                @for(player of lista; track $index){
+                    <div class="player-card w33">
+                        <h1>{{player.nome}}</h1>
+                        <div class="line"></div>
+                        <div class="infos-container flex justify-between align-center">
+                            <div class="pt-containers w50">
+                                <div class="flex justify-between box-pt pontuacao-container">
+                                    <p>Pontuação:</p>
+                                    <p>{{player.pontuacao}}</p>
+                                </div>
+                                <div class="flex justify-between box-pt partidas-container">
+                                    <p>Partidas Jogadas:</p>
+                                    <p>{{player.partidas}}</p>
+                                </div>
+                            </div>
+                            <div class="btn-container">
+                                <div class="choose">
+                                    <button
+                                        class="choose"
+                                        (click)="escolher(player.id)"
+                                    >
+                                        Escolher
+                                    </button>
+                                </div>
+                                <div class="actions">
+                                    <button
+                                        class="edit"
+                                        (click)="editar(player)"
+                                    >
+                                        Editar
+                                    </button>
+                                    <button
+                                        class="delete"
+                                        (click)="deletar(player.id)"
+                                    >
+                                        Deletar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            @else{
+                <!-- exibir sem players -->
+            }
+        }
+    </div>
+    <div class="page-control flex justify-between">
+        @if(pageNumber == 0){
+            <button
+                class="voltar disabled"
+                (click)="voltarPagina()"
+            >
+                <i class="fas fa-solid fa-arrow-left"></i>
+            </button>
+        }
+        @else{
+            <button
+                class="voltar"
+                (click)="voltarPagina()"
+            >
+                <i class="fas fa-solid fa-arrow-left"></i>
+            </button>
+        }
+        <div class="pages-container flex align-center justify-center ">
+            @if(pages.length <= 0){
+                <!-- exibir sem paginas -->
+            }
+            @else{
+                @for(page of pages; track $index){
+                    @if($index >= startPage && $index < startPage + maxPagesToShow){
+                        @if($index == pageNumber){
+                            <button (click)="irParaPagina($index)" class="selected">
+                                {{$index+1}}
+                            </button>
+                        }@else{
+                            <button (click)="irParaPagina($index)">
+                                {{$index+1}}
+                            </button>
+                        }
+                    }
+                }
+            }
+        </div>
+        @if(pageNumber==pages.length-1){
+            <button
+                class="avancar disabled"
+                (click)="avancarPagina()"
+            >
+                <i class="fas fa-solid fa-arrow-right"></i>
+            </button>
+        }
+        @else{
+            <button
+                class="avancar"
+                (click)="avancarPagina()"
+            >
+                <i class="fas fa-solid fa-arrow-right"></i>
+            </button>
+        }
+    </div>
+</div>
+

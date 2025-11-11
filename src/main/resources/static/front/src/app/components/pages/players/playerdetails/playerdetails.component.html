@@ -1,0 +1,17 @@
+<div class="container flex center">
+    <form class="flex direction-col center w100">
+        <div class="title">
+            Registrar Jogador
+        </div>
+        <div class="input-container">
+            <input type="text" required name="nome" id="nome" [(ngModel)]="player.nome">
+            <label for="nome">Nome:</label>
+        </div>
+        <button
+            type="submit"
+            (click)="save()"
+        >
+            Cadastrar
+        </button>
+    </form>
+</div>

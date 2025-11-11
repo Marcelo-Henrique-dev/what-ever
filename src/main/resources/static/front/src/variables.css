@@ -1,0 +1,7 @@
+:root{
+    --bg-primary: rgb(96, 96, 255);
+    --bg-secondary: rgb(67, 67, 202);
+    --bg-card-secondary: rgb(152, 67, 202);
+    --btn-bg: rgb(43, 153, 43);
+    --btn-bg-hover: rgb(34, 134, 34);
+}

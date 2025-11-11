@@ -1,0 +1,75 @@
+<div class="container flex center direction-col">
+    @if(questions.length > 0 && questions[questaoAtualIndex]; as question){
+        <div class="questions-wraper flex">
+            <div class="question-box flex direction-col center" id="{{questaoAtualIndex}}">
+                <div class="question w100">
+                    <div class="head-question flex justify-between align-center {{question.difficulty}}">
+                        <div class="title">
+                            Questão {{questaoAtualIndex+1}}
+                        </div>
+                        <div class="title">
+                            {{question.category}}
+                        </div>
+                    </div>
+                    <div class="body-question">
+                        <p>{{question.question}}</p>
+                        <form>
+                            @for(option of opcoesEmbaralhadas; track $index){
+                                <div class="option">
+                                    <input 
+                                        type="radio" 
+                                        name="resposta" 
+                                        id="{{'q' + questaoAtualIndex + 'o' + $index}}" 
+                                        value="{{option}}"
+                                        (change)="registerAnswer(questaoAtualIndex, option)"
+                                        [checked]="userAnswers[questaoAtualIndex] === option"
+                                    >
+                                    <label for="{{'q' + questaoAtualIndex + 'o' + $index}}">{{option}}</label>
+                                </div>
+                            }
+                        </form>
+                    </div>
+                </div>
+                
+                @if(questaoAtualIndex === questions.length-1){
+                    <button
+                        class="nextButton"
+                        (click)="avancarQuestao()"
+                    >
+                        Concluir
+                    </button>
+                }
+                @else if(questaoAtualIndex > 0){
+                    <div class="buttons-questions flex">
+                        <button
+                            class="nextButton"
+                            (click)="voltarQuestao()"
+                        >
+                            Anterior
+                        </button>
+                        <button
+                            class="nextButton"
+                            (click)="avancarQuestao()"
+                        >
+                            Próxima
+                        </button>
+                    </div>
+                }
+                @else {
+                    <button
+                        class="nextButton"
+                        (click)="avancarQuestao()"
+                    >
+                        Próxima
+                    </button>
+                }
+            </div>
+        </div>
+    }
+    @else if(questions.length > 0) {
+        <p class="sem">Quiz finalizado. Clique em Concluir!</p>
+    }
+    @else {
+        <p class="sem">Sem questões no momento!</p>
+    }
+</div>

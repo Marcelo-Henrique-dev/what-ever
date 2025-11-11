@@ -1,0 +1,25 @@
+nav{
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+    background: linear-gradient(to right, rgb(96, 96, 255), rgb(67, 67, 202));
+    ul{
+        list-style: none;
+        li{
+            display: inline-block;
+            margin: 0 4px;
+            a{
+                color: white;
+                text-decoration: none;
+                display: inline-block;
+                padding: 20px 4px;
+                transition: .6s;
+            }
+            a:hover{
+                background-color: rgb(67, 67, 202);
+                padding: 20px 4px;
+            }
+            a.selected{
+                background-color: rgb(67, 67, 202);
+            }
+        }
+    }
+}

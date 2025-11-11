@@ -1,0 +1,54 @@
+@import url(./variables.css);
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Roboto", sans-serif;
+}
+
+html, body{
+    background-color: #efefef;
+    height: 100%;
+}
+
+.container{
+    max-width: 1280px;
+    margin: 0 auto;
+}
+
+.flex{
+    display: flex;
+}
+
+.center{
+    justify-content: center;
+    align-items: center;
+}
+
+.justify-center{
+    justify-content: center;
+}
+
+.align-center{
+    align-items: center;
+}
+
+.justify-between{
+    justify-content: space-between;
+}
+
+.w100{
+    width: 100%;
+}
+
+.w50{
+    width: 50%;
+}
+
+.w33{
+    width: 30%;
+}
+
+.direction-col{
+    flex-direction: column;
+}

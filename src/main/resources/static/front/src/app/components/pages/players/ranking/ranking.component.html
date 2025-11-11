@@ -1,0 +1,26 @@
+<div class="container flex align-center direction-col">
+    <div class="title">
+        Ranking 10 melhores
+    </div>
+    <div class="line w100"></div>
+    <table class="w100">
+        <thead>
+            <tr>
+                <th>Posição</th>
+                <th>Jogador</th>
+                <th>Partidas</th>
+                <th>Pontuação</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for(player of playersRank; track $index){
+                <tr>
+                    <td>{{$index+1}}º lugar</td>
+                    <td>{{player.nome}}</td>
+                    <td>{{player.partidas}}</td>
+                    <td>{{player.pontuacao}}</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

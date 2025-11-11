@@ -1,0 +1,73 @@
+form{
+    gap: 20px;
+    min-height: calc(100vh - 300px);
+    .title-container{
+        h2{
+            color: var(--bg-card-secondary);
+            font-size: 1.8rem;
+        }
+        p{
+            color: var(--bg-primary);
+            font-size: 1.3rem;
+        }
+    }
+    .input-container{
+        width: 80%;
+        position: relative;
+        input{
+            height: 40px;
+            padding-left: 8px;
+            border-radius: 10px;
+            outline: 0;
+            border: 1px solid var(--bg-primary);
+            font-size: 1.3rem;
+        }
+        label{
+            position: absolute;
+            left: 8px;
+            top: 5px;
+            font-size: 1.4rem;
+            transition: .4s;
+            color: var(--bg-primary);
+        }
+        input:focus ~ label{
+            font-size: 1.2rem;
+            top: -12px;
+            background-color: white;
+            padding: 0 2px;
+        }
+        input:valid ~ label{
+            font-size: 1.2rem;
+            top: -12px;
+            background-color: white;
+            padding: 0 2px;
+        }
+    }
+    select{
+        width: 80%;
+        height: 40px;
+        font-size: 1.4rem;
+        padding-left: 8px;
+        cursor: pointer;
+        border: none;
+        border-bottom: 1px solid var(--bg-primary);
+        color: var(--bg-primary);
+        outline: none;
+    }
+    button{
+        background-color: var(--btn-bg);
+        width: 30%;
+        height: 50px;
+        border: 0;
+        color: white;
+        font-size: 1.2rem;
+        font-weight: bold;
+        border-radius: 30px;
+        cursor: pointer;
+        transition: .4s;
+    }
+    button:hover{
+        background-color: var(--btn-bg-hover);
+        transform: scale(1.02);
+    }
+}
