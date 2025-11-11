@@ -8,6 +8,7 @@ import com.whatever.entity.Player;
 import com.whatever.repository.PlayerRepository;
 
 @Service
+@SuppressWarnings("null")
 public class PlayerService implements IPlayerService {
 
     private final PlayerRepository playerRepository;

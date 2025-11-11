@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.whatever.entity.Player;
 import com.whatever.repository.PlayerRepository;
 
+@SuppressWarnings("null")
 @EnableCaching
 @RestController
 @RequestMapping("/what-ever/performance")
