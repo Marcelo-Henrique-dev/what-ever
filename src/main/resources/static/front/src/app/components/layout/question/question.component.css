@@ -1,5 +1,5 @@
 .container{
-    min-height: calc(100vh - 59px);
+    height: calc(100vh - 59px);
     padding: 10px 2%;
     gap: 30px;
     p.sem{
@@ -9,53 +9,77 @@
         padding: 10px 2%;
         border-radius: 10px;
     }
-    .question{
-        background-color: white;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
-        border-radius: 10px;
-        .head-question{
-            border-bottom: 3px solid red;
-            padding: 10px 2%;
-            .title{
-                background: linear-gradient(to right, var(--bg-secondary), var(--bg-primary), var(--bg-card-secondary));
-                background-clip: text;
-                color: transparent;
-                font-weight: bold;
-                font-size: 2rem;
+    .questions-wraper{
+        padding: 0 2%;
+        overflow-x: hidden;
+        max-width: 100%;
+        gap: 40px;
+        height: calc(100vh - 59px);
+        .question-box{
+            min-width: 100%;
+            gap: 20px;
+            .question{
+                background-color: white;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+                border-radius: 10px;
+                min-width: 100%;
+                .head-question{
+                    border-bottom: 3px solid;
+                    padding: 10px 2%;
+                    .title{
+                        background: linear-gradient(to right, var(--bg-secondary), var(--bg-primary), var(--bg-card-secondary));
+                        background-clip: text;
+                        color: transparent;
+                        font-weight: bold;
+                        font-size: 2rem;
+                    }
+                }
+                .head-question.hard{
+                    border-color: rgb(250, 59, 25);
+                }
+                .head-question.medium{
+                    border-color: rgb(255, 242, 64);
+                }
+                .head-question.easy{
+                    border-color: rgb(67, 211, 67);
+                }
+                .body-question{
+                    padding: 10px 2%;
+                    p{
+                        font-size: 1.4rem;
+                        text-align: justify;
+                    }
+                    .option{
+                        padding: 10px 0;
+                        font-size: 1.2rem;
+                        input{
+                            cursor: pointer;
+                            margin-right: 4px;
+                        }
+                        label{
+                            cursor: pointer;
+                        }
+                    }
+                }
             }
-        }
-        .body-question{
-            padding: 10px 2%;
-            p{
-                font-size: 1.4rem;
-                text-align: justify;
-            }
-            .option{
-                padding: 10px 0;
+            .nextButton{
+                background: linear-gradient(to right, var(--btn-bg), var(--btn-bg-hover));
+                border: none;
+                padding: 10px 2%;
+                border-radius: 20px;
                 font-size: 1.2rem;
-                input{
-                    cursor: pointer;
-                    margin-right: 4px;
-                }
-                label{
-                    cursor: pointer;
-                }
+                color: white;
+                cursor: pointer;
+                transition: .4s;
+                box-shadow: 2px 3px 10px rgba(0, 0, 0, 0.4);
+            }
+            .nextButton:hover{
+                background-color: var(--btn-bg-hover);
+                transform: scale(1.05);
+            }
+            .buttons-questions{
+                gap: 20px;
             }
         }
-    }
-    .nextButton{
-        background: linear-gradient(to right, var(--btn-bg), var(--btn-bg-hover));
-        border: none;
-        padding: 10px 2%;
-        border-radius: 20px;
-        font-size: 1.2rem;
-        color: white;
-        cursor: pointer;
-        transition: .4s;
-        box-shadow: 2px 3px 10px rgba(0, 0, 0, 0.4);
-    }
-    .nextButton:hover{
-        background-color: var(--btn-bg-hover);
-        transform: scale(1.05);
     }
 }

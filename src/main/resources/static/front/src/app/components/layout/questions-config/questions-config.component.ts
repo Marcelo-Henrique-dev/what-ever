@@ -85,7 +85,18 @@ export class QuestionsConfigComponent {
   iniciarQuiz(quizConfig: QuizConfig){
     this.quizService.getQuestions(quizConfig).subscribe({
       next: (response) =>{
-        this.questions = response.results;
+        const decodeQuestions = response.results.map((q: QuizQuestion) => {
+          q.question = this.decodeHtmlEntities(q.question);
+          q.category = this.decodeHtmlEntities(q.category);
+          if(q.correct_answer){
+            q.correct_answer = this.decodeHtmlEntities(q.correct_answer);
+          }
+          if(q.incorrect_answers && Array.isArray(q.incorrect_answers)){
+            q.incorrect_answers = q.incorrect_answers.map((ans: string) => this.decodeHtmlEntities(ans))
+          }
+          return q;
+        })
+        this.questions = decodeQuestions;
         this.router.navigate(["quiz/questions"],{
           state: {
             questions: this.questions
@@ -101,6 +112,12 @@ export class QuestionsConfigComponent {
         })
       }
     })
+  }
+
+  decodeHtmlEntities(text: string): string {
+    const element = document.createElement('textarea');
+    element.innerHTML = text;
+    return element.value;
   }
 
 }

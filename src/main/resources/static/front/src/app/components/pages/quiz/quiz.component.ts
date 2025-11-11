@@ -4,7 +4,7 @@ import { QuestionComponent } from '../../layout/question/question.component';
 
 @Component({
   selector: 'app-quiz',
-  imports: [QuestionsConfigComponent, QuestionComponent],
+  imports: [QuestionsConfigComponent],
   templateUrl: './quiz.component.html',
   styleUrl: './quiz.component.css'
 })

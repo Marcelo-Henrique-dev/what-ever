@@ -1,37 +1,68 @@
 <div class="container flex center direction-col">
     @if(questions.length>0){
-        @for(question of questions; track $index){
-            <div class="question w100">
-            <div class="head-question flex justify-between align-center">
-                <div class="title">
-                    Questão {{$index}}
-                </div>
-                <div class="title">
-                    {{question.category}}
-                </div>
-            </div>
-            <div class="body-question">
-                <p>{{question.question}}</p>
-                <form>
-                    @for(incorrect of question.incorrect_answers; track $index){
-                        <div class="option">
-                            <input type="radio" name="resposta" id="a" value="a">
-                            <label for="a">{{incorrect}}</label>
+        <div class="questions-wraper flex">
+            @for(question of questions; track $index){
+                <div class="question-box flex direction-col center" id="{{$index}}">
+                    <div class="question w100">
+                        <div class="head-question flex justify-between align-center {{question.difficulty}}">
+                            <div class="title">
+                                Questão {{$index+1}}
+                            </div>
+                            <div class="title">
+                                {{question.category}}
+                            </div>
+                        </div>
+                        <div class="body-question">
+                            <p>{{question.question}}</p>
+                            <form>
+                                @for(incorrect of question.incorrect_answers; track $index){
+                                    <div class="option">
+                                        <input type="radio" name="resposta" id="a" value="a">
+                                        <label for="a">{{incorrect}}</label>
+                                    </div>
+                                }
+                                <div class="option">
+                                    <input type="radio" name="resposta" id="a" value="a">
+                                    <label for="a">{{question.correct_answer}}</label>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    @if($index == questions.length-1){
+                        <button
+                            class="nextButton"
+                            (click)="avancarQuestao()"
+                        >
+                            Concluir
+                        </button>
+                    }
+                    @else if($index > 0){
+                        <div class="buttons-questions flex">
+                            <button
+                                class="nextButton"
+                                (click)="voltarQuestao()"
+                            >
+                                Anterior
+                            </button>
+                                <button
+                                class="nextButton"
+                                (click)="avancarQuestao()"
+                            >
+                                Próxima
+                            </button>
                         </div>
                     }
-                    <div class="option">
-                        <input type="radio" name="resposta" id="a" value="a">
-                        <label for="a">{{question.correct_answer}}</label>
-                    </div>
-                </form>
-            </div>
+                    @else {
+                        <button
+                            class="nextButton"
+                            (click)="avancarQuestao()"
+                        >
+                            Próxima
+                        </button>
+                    }
+                </div>
+            }
         </div>
-        <button
-            class="nextButton"
-        >
-            Próxima
-        </button>
-        }
     }
     @else {
         <p class="sem">Sem questões no momento!</p>
