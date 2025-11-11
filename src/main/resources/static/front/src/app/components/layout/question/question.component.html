@@ -14,30 +14,19 @@
                     <div class="body-question">
                         <p>{{question.question}}</p>
                         <form>
-                            @for(incorrect of question.incorrect_answers; track $index){
+                            @for(option of opcoesEmbaralhadas; track $index){
                                 <div class="option">
                                     <input 
                                         type="radio" 
                                         name="resposta" 
-                                        id="{{'q' + questaoAtualIndex + 'i' + $index}}" 
-                                        value="{{incorrect}}"
-                                        (change)="registerAnswer(questaoAtualIndex, incorrect)"
-                                        [checked]="userAnswers[questaoAtualIndex] === incorrect"
+                                        id="{{'q' + questaoAtualIndex + 'o' + $index}}" 
+                                        value="{{option}}"
+                                        (change)="registerAnswer(questaoAtualIndex, option)"
+                                        [checked]="userAnswers[questaoAtualIndex] === option"
                                     >
-                                    <label for="{{'q' + questaoAtualIndex + 'i' + $index}}">{{incorrect}}</label>
+                                    <label for="{{'q' + questaoAtualIndex + 'o' + $index}}">{{option}}</label>
                                 </div>
                             }
-                            <div class="option">
-                                <input 
-                                    type="radio" 
-                                    name="resposta" 
-                                    id="{{'q' + questaoAtualIndex + 'c'}}" 
-                                    value="{{question.correct_answer}}"
-                                    (change)="registerAnswer(questaoAtualIndex, question.correct_answer)"
-                                    [checked]="userAnswers[questaoAtualIndex] === question.correct_answer"
-                                >
-                                <label for="{{'q' + questaoAtualIndex + 'c'}}">{{question.correct_answer}}</label>
-                            </div>
                         </form>
                     </div>
                 </div>

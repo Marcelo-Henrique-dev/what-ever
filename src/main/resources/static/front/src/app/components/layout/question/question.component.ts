@@ -5,6 +5,7 @@ import Swal from 'sweetalert2';
 import { PlayerService } from '../../../service/player.service';
 import { lastValueFrom } from 'rxjs';
 import { Player } from '../../../models/player';
+import { QuizService } from '../../../service/quiz.service';
 
 @Component({
   selector: 'app-question',
@@ -18,12 +19,15 @@ export class QuestionComponent {
   questaoAtualIndex: number = 0;
   playerSelecionado!: Player;
   playerService = inject(PlayerService);
+  quizService = inject(QuizService)
+  opcoesEmbaralhadas: string[] = [];
   userAnswers: {
     [questionIndex: number]: string;
   } = {};
 
   constructor() {
     this.carregarEstadoInicial();
+    this.carregarOpcoesParaQuestaoAtual();
   }
 
   carregarEstadoInicial() {
@@ -40,6 +44,16 @@ export class QuestionComponent {
         "ERRO CRÍTICO: Objeto 'selectedPlayer' não encontrado no history.state. O placar não poderá ser salvo."
       );
     }
+  }
+
+  carregarOpcoesParaQuestaoAtual(){
+    if(this.questions.length === 0) return;
+    const question = this.questions[this.questaoAtualIndex];
+    const todasOpcoes = [
+      ...question.incorrect_answers,
+      question.correct_answer
+    ];
+    this.opcoesEmbaralhadas = this.quizService.embaralharArray(todasOpcoes);
   }
 
   registerAnswer(questionIndex: number, answer: string): void {
@@ -69,14 +83,15 @@ export class QuestionComponent {
     if (this.questions.length === 0) return;
     if (this.questaoAtualIndex < this.questions.length - 1) {
       this.questaoAtualIndex++;
+      this.carregarOpcoesParaQuestaoAtual();
     } else if (this.questaoAtualIndex === this.questions.length - 1) {
       this.finalizarQuiz();
     }
   }
-
+  
   async finalizarQuiz(): Promise<void> {
     const { score, results } = this.calculateScoreAndResults();
-
+    
     try {
       if (this.playerSelecionado && this.playerSelecionado.id > 0) {
         this.playerSelecionado.pontuacao += score;
@@ -92,7 +107,7 @@ export class QuestionComponent {
           'AVISO: Player não carregado ou inválido. O placar não será salvo no DB.'
         );
       }
-
+      
       Swal.fire({
         title: 'Quiz Concluído! 🎉',
         text: `Você fez ${score}pts de ${(this.questions.length)*10}. Seu placar foi atualizado!`,
@@ -120,10 +135,11 @@ export class QuestionComponent {
       });
     }
   }
-
+  
   voltarQuestao(): void {
     if (this.questaoAtualIndex > 0) {
       this.questaoAtualIndex--;
+      this.carregarOpcoesParaQuestaoAtual();
     }
   }
 }
