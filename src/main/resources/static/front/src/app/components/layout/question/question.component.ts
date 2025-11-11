@@ -74,6 +74,7 @@ export class QuestionComponent {
         user_answer: userAnswer || 'Não Respondida',
         correct_answer: question.correct_answer,
         is_correct: isCorrect,
+        question_id: this.questions.indexOf(question)+1
       });
     });
     return { score, results };

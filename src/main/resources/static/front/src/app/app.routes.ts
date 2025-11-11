@@ -6,6 +6,7 @@ import { PlayerlistaComponent } from './components/pages/players/playerlista/pla
 import { RankingComponent } from './components/pages/players/ranking/ranking.component';
 import { QuizComponent } from './components/pages/quiz/quiz.component';
 import { QuestionComponent } from './components/layout/question/question.component';
+import { ResultadosComponent } from './components/pages/resultados/resultados.component';
 
 export const routes: Routes = [
     {path: "", redirectTo: "home", pathMatch: 'full'},
@@ -17,6 +18,6 @@ export const routes: Routes = [
         {path: "ranking", component: RankingComponent},
         {path: "quiz", component: QuizComponent},
         {path: "quiz/questions", component: QuestionComponent},
-        {path: "resultados", redirectTo: "lista-jogadores", pathMatch: 'full'}
+        {path: "resultados", component: ResultadosComponent}
     ]}
 ];

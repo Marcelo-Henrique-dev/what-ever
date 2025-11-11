@@ -33,4 +33,5 @@ export interface UserAnswer {
   user_answer: string;
   correct_answer: string;
   is_correct: boolean;
+  question_id: number;
 }

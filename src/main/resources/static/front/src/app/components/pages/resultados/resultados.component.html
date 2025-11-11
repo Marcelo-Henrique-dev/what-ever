@@ -1,0 +1,30 @@
+<div class="container flex direction-col align-center">
+
+    <div class="graficoContainer">
+        <canvas width="300" height="300" id="MyChart" ></canvas>
+    </div>
+
+    
+    @if(incorretas.length > 0){
+        <div class="title">
+            Correções
+        </div>
+        <div class="line w100"></div>
+        <div class="correcoes w100 flex">
+            @for (question of incorretas; track $index) {
+                <div class="card-question w50 flex direction-col justify-between">
+                    <div class="title-container">
+                        <h1>Questão {{question.question_id}}</h1>
+                        <div class="line"></div>
+                    </div>
+                    <p><b>Pergunta: </b>{{question.question}}</p>
+                    <p><b>Resposta correta:</b> {{question.correct_answer}}</p>
+                    <p><b>Sua Resposta: </b>{{question.user_answer}}</p>
+                </div>
+            }
+        </div>
+    }
+    @else {
+        <div class="title">Parabéns você acertou todas as questões!</div>
+    }
+</div>
