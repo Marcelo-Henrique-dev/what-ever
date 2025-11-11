@@ -17,8 +17,8 @@
                             <form>
                                 @for(incorrect of question.incorrect_answers; track $index){
                                     <div class="option">
-                                        <input type="radio" name="resposta" id="a" value="a">
-                                        <label for="a">{{incorrect}}</label>
+                                        <input type="radio" name="resposta" id="{{incorrect}}" value="a">
+                                        <label for="{{incorrect}}">{{incorrect}}</label>
                                     </div>
                                 }
                                 <div class="option">
