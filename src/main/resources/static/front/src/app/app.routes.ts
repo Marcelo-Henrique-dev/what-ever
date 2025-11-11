@@ -16,6 +16,7 @@ export const routes: Routes = [
         {path: "lista-jogadores", component: PlayerlistaComponent},
         {path: "ranking", component: RankingComponent},
         {path: "quiz", component: QuizComponent},
-        {path: "quiz/questions", component: QuestionComponent}
+        {path: "quiz/questions", component: QuestionComponent},
+        {path: "resultados", redirectTo: "lista-jogadores", pathMatch: 'full'}
     ]}
 ];

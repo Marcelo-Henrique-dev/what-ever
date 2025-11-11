@@ -10,108 +10,120 @@ import { Player } from '../../../models/player';
   selector: 'app-question',
   imports: [],
   templateUrl: './question.component.html',
-  styleUrl: './question.component.css'
+  styleUrl: './question.component.css',
 })
 export class QuestionComponent {
-
-  router = inject(Router)
+  router = inject(Router);
   questions: QuizQuestion[] = [];
   questaoAtualIndex: number = 0;
   playerSelecionado!: Player;
   playerService = inject(PlayerService);
   userAnswers: {
-    [questionIndex: number] :string
+    [questionIndex: number]: string;
   } = {};
 
-  constructor(){
-    this.carregarQuestoes();
+  constructor() {
+    this.carregarEstadoInicial();
   }
 
-  carregarQuestoes(){
-    const navigationState = this.router.getCurrentNavigation()?.extras.state;
-    if(navigationState && 'questions' in navigationState){
-      this.questions = navigationState['questions'] as QuizQuestion[];
-    }else{
-      console.log("Sem navigationState")
+  carregarEstadoInicial() {
+    const state = history.state;
+    if (state && 'questions' in state) {
+      this.questions = state['questions'] as QuizQuestion[];
+    } else {
+      console.error('Erro: Questões não encontradas no estado de navegação.');
+    }
+    if (state && 'selectedPlayer' in state) {
+      this.playerSelecionado = state['selectedPlayer'] as Player;
+    } else {
+      console.error(
+        "ERRO CRÍTICO: Objeto 'selectedPlayer' não encontrado no history.state. O placar não poderá ser salvo."
+      );
     }
   }
 
-  registerAnswer(questionIndex: number, answer: string): void{
+  registerAnswer(questionIndex: number, answer: string): void {
     this.userAnswers[questionIndex] = answer;
   }
 
-  calculateScoreAndResults(): {score: number, results: UserAnswer[]}{
+  calculateScoreAndResults(): { score: number; results: UserAnswer[] } {
     let score = 0;
     const results: UserAnswer[] = [];
-    this.questions.forEach((question, index)=>{
+    this.questions.forEach((question, index) => {
       const userAnswer = this.userAnswers[index];
       const isCorrect = userAnswer === question.correct_answer;
-      if(isCorrect){
-        score++;
+      if (isCorrect) {
+        score += 10;
       }
       results.push({
         question: question.question,
-        user_answer: userAnswer || "Não Respondida",
+        user_answer: userAnswer || 'Não Respondida',
         correct_answer: question.correct_answer,
-        is_correct: isCorrect
+        is_correct: isCorrect,
       });
-    })
-    return {score, results}
+    });
+    return { score, results };
   }
 
-  avancarQuestao(): void{
+  avancarQuestao(): void {
     if (this.questions.length === 0) return;
-    if(this.questaoAtualIndex < this.questions.length - 1){
+    if (this.questaoAtualIndex < this.questions.length - 1) {
       this.questaoAtualIndex++;
-      // this.rolarParaQuestao(this.questaoAtualIndex);
-    }else if(this.questaoAtualIndex === this.questions.length-1){
+    } else if (this.questaoAtualIndex === this.questions.length - 1) {
       this.finalizarQuiz();
     }
   }
 
-  async finalizarQuiz(): Promise<void>{
-    const {score, results} = this.calculateScoreAndResults();
-    try{
-      const navigationState = this.router.getCurrentNavigation()?.extras.state;
-      if(navigationState && 'idSelectedPlayer' in navigationState){
-        this.playerSelecionado = navigationState['selectedPlayer'];
-        await lastValueFrom(this.playerService.update(this.playerSelecionado, this.playerSelecionado.id));
+  async finalizarQuiz(): Promise<void> {
+    const { score, results } = this.calculateScoreAndResults();
+
+    try {
+      if (this.playerSelecionado && this.playerSelecionado.id > 0) {
+        this.playerSelecionado.pontuacao += score;
+        this.playerSelecionado.partidas++;
+        await lastValueFrom(
+          this.playerService.update(
+            this.playerSelecionado,
+            this.playerSelecionado.id
+          )
+        );
+      } else {
+        console.error(
+          'AVISO: Player não carregado ou inválido. O placar não será salvo no DB.'
+        );
       }
+
       Swal.fire({
-        title: "Quiz Concluído! 🎉",
-        text: `Você acertou ${score} de ${this.questions.length} questões. Seu placar foi atualizado!`,
-        icon: "success",
-        confirmButtonText: "Ver Resultados"
+        title: 'Quiz Concluído! 🎉',
+        text: `Você fez ${score}pts de ${(this.questions.length)*10}. Seu placar foi atualizado!`,
+        icon: 'success',
+        confirmButtonText: 'Ver Resultados',
       }).then(() => {
-        this.router.navigate(['/resultados'], { 
-          state: { 
-            totalScore: score, 
+        this.router.navigate(['/resultados'], {
+          state: {
+            totalScore: score,
             totalQuestions: this.questions.length,
-            quizResults: results 
-          } 
+            quizResults: results,
+          },
         });
       });
-    }catch(error){
-      
+    } catch (error) {
+      console.error(
+        'ERRO CRÍTICO ao finalizar quiz e atualizar jogador:',
+        error
+      );
+      Swal.fire({
+        title: 'Erro de Servidor',
+        text: `Não foi possível salvar o placar. Verifique o console e o backend para detalhes do erro.`,
+        icon: 'error',
+        confirmButtonText: 'Ok',
+      });
     }
   }
 
-  voltarQuestao(): void{
-    if(this.questaoAtualIndex > 0){
+  voltarQuestao(): void {
+    if (this.questaoAtualIndex > 0) {
       this.questaoAtualIndex--;
-      // this.rolarParaQuestao(this.questaoAtualIndex);
     }
   }
-
-  // rolarParaQuestao(index: number): void{
-  //   const questaoElement = document.getElementById(index.toString());
-  //   if(questaoElement){
-  //     questaoElement.scrollIntoView({
-  //       behavior: 'smooth',
-  //       block: 'center',
-  //       inline: 'center'
-  //     })
-  //   }
-  // }
-
 }
