@@ -27,3 +27,10 @@ export interface QuizResult{
     correctAnswers: number;
     player: Player;
 }
+
+export interface UserAnswer {
+  question: string;
+  user_answer: string;
+  correct_answer: string;
+  is_correct: boolean;
+}

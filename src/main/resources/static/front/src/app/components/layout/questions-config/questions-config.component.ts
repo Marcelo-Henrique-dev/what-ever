@@ -99,7 +99,8 @@ export class QuestionsConfigComponent {
         this.questions = decodeQuestions;
         this.router.navigate(["quiz/questions"],{
           state: {
-            questions: this.questions
+            questions: this.questions,
+            selectedPlayer: this.playerSelecionado
           }
         })
       },

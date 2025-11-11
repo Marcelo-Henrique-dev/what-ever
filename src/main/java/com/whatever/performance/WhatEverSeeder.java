@@ -37,7 +37,7 @@ public class WhatEverSeeder implements CommandLineRunner {
         int partidas;
 
         
-        for (int i = 0; i < 150; i++) {
+        for (int i = 0; i < 1; i++) {
             pontuacaoRandom = random.nextInt(0, 50);
             partidas = random.nextInt(0, 10);
             Player player = new Player();
