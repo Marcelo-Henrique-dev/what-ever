@@ -5,6 +5,7 @@ import { PlayerdetailsComponent } from './components/pages/players/playerdetails
 import { PlayerlistaComponent } from './components/pages/players/playerlista/playerlista.component';
 import { RankingComponent } from './components/pages/players/ranking/ranking.component';
 import { QuizComponent } from './components/pages/quiz/quiz.component';
+import { QuestionComponent } from './components/layout/question/question.component';
 
 export const routes: Routes = [
     {path: "", redirectTo: "home", pathMatch: 'full'},
@@ -14,6 +15,7 @@ export const routes: Routes = [
         {path: "register-player/:id", component: PlayerdetailsComponent},
         {path: "lista-jogadores", component: PlayerlistaComponent},
         {path: "ranking", component: RankingComponent},
-        {path: "quiz", component: QuizComponent}
+        {path: "quiz", component: QuizComponent},
+        {path: "quiz/questions", component: QuestionComponent}
     ]}
 ];

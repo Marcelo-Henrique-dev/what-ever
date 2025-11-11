@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { FormsModule } from "@angular/forms";
-import { QuizConfig } from '../../../models/quiz';
+import { QuizConfig, QuizQuestion } from '../../../models/quiz';
 import { Category } from '../../../models/category';
 import { QuizService } from '../../../service/quiz.service';
 import Swal from 'sweetalert2';
@@ -22,6 +22,7 @@ export class QuestionsConfigComponent {
   router = inject(Router)
   playerSelecionadoId: number | undefined;
   playerSelecionado: Player = new Player(0, '', 0, 0);
+  questions: QuizQuestion[] = [];
 
   quizConfig: QuizConfig ={
     amount: 10,
@@ -79,6 +80,27 @@ export class QuestionsConfigComponent {
         })
       }
     });
+  }
+
+  iniciarQuiz(quizConfig: QuizConfig){
+    this.quizService.getQuestions(quizConfig).subscribe({
+      next: (response) =>{
+        this.questions = response.results;
+        this.router.navigate(["quiz/questions"],{
+          state: {
+            questions: this.questions
+          }
+        })
+      },
+      error: (error) => {
+        Swal.fire({
+          title: "Erro ao carregar questões",
+          text: error,
+          icon: "error",
+          confirmButtonText: "Ok"
+        })
+      }
+    })
   }
 
 }
