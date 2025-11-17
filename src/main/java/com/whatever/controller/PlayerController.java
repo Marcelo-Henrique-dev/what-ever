@@ -32,7 +32,6 @@ public class PlayerController {
 
     private final IPlayerService playerService;
 
-    // Constructor Injection (melhor prática)
     public PlayerController(IPlayerService playerService) {
         this.playerService = playerService;
     }
@@ -79,7 +78,6 @@ public class PlayerController {
     @PutMapping("/update/{id}")
     public ResponseEntity<ApiResponse<PlayerResponse>> update(@PathVariable Long id,
             @RequestBody @Valid PlayerUpdateRequest updateRequest) {
-        // Usa o Mapper em vez de fazer conversão manual
         Player player = PlayerMapper.toModel(updateRequest);
         Player updatedPlayer = playerService.update(player, id);
         PlayerResponse response = PlayerMapper.toResponse(updatedPlayer);

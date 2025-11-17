@@ -15,14 +15,12 @@ public class WhatEverSeeder implements CommandLineRunner {
 
     private final PlayerRepository playerRepository;
 
-    // Constructor Injection (melhor prática)
     public WhatEverSeeder(PlayerRepository playerRepository) {
         this.playerRepository = playerRepository;
     }
 
     @Override
     public void run(String... args) throws Exception {
-        // Verifica se já existem players no banco para evitar duplicação
         if (playerRepository.count() > 0) {
             System.out.println("Seed já foi executado anteriormente. Pulando...");
             return;

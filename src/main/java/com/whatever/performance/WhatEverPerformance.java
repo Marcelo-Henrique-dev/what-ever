@@ -30,7 +30,6 @@ public class WhatEverPerformance {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
 
-        // resolver se o pageable retornar null, fazer tratamento do null
         var players = playerRepository.findAll(pageable);
         stopWatch.stop();
         
@@ -44,7 +43,6 @@ public class WhatEverPerformance {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
         
-        // resolver se o pageable retornar null, fazer tratamento do null
         var players = playerRepository.findAll(pageable);
         stopWatch.stop();
 

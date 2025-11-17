@@ -8,7 +8,7 @@ import com.whatever.entity.Player;
 public class PlayerMapper {
 
     private PlayerMapper() {
-        // Construtor privado para classe utilitária
+        
     }
 
     public static PlayerResponse toResponse(Player player) {
@@ -24,8 +24,8 @@ public class PlayerMapper {
 
         Player player = new Player();
         player.setNome(request.nome());
-        player.setPartidas(0); // Inicia com 0 partidas
-        player.setPontuacao(0); // Inicia com 0 pontos
+        player.setPartidas(0);
+        player.setPontuacao(0);
 
         return player;
     }
