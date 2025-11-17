@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Player } from '../models/player'
-import { ApiResnponse } from '../models/api-resnponse';
+import { ApiResponse } from '../models/api-response';
 import { PageResponse } from '../models/page-response';
 
 @Injectable({
@@ -19,24 +19,24 @@ export class PlayerService {
     return this.http.get<PageResponse<Player>>(this.API_PERFORMANCE+"/com-paginacao?page="+page+"&size="+size);
   }
   
-  findAllRank(): Observable<ApiResnponse<Player[]>>{
-    return this.http.get<ApiResnponse<Player[]>>(this.API+"/findAll");
+  findAllRank(): Observable<ApiResponse<Player[]>>{
+    return this.http.get<ApiResponse<Player[]>>(this.API+"/findAll");
   }
 
-  findById(id: number): Observable<ApiResnponse<Player>>{
-    return this.http.get<ApiResnponse<Player>>(this.API+"/findById/"+id);
+  findById(id: number): Observable<ApiResponse<Player>>{
+    return this.http.get<ApiResponse<Player>>(this.API+"/findById/"+id);
   }
 
-  save(player: Player): Observable<ApiResnponse<Player>>{
-    return this.http.post<ApiResnponse<Player>>(this.API, player);
+  save(player: Player): Observable<ApiResponse<Player>>{
+    return this.http.post<ApiResponse<Player>>(this.API, player);
   }
 
-  update(player: Player, id: number): Observable<ApiResnponse<Player>>{
-    return this.http.put<ApiResnponse<Player>>(this.API+"/update/"+id, player);
+  update(player: Player, id: number): Observable<ApiResponse<Player>>{
+    return this.http.put<ApiResponse<Player>>(this.API+"/update/"+id, player);
   }  
 
-  delete(id: number): Observable<ApiResnponse<void>>{
-    return this.http.delete<ApiResnponse<void>>(this.API+"/delete/"+id);
+  delete(id: number): Observable<ApiResponse<void>>{
+    return this.http.delete<ApiResponse<void>>(this.API+"/delete/"+id);
   }
 
 }
