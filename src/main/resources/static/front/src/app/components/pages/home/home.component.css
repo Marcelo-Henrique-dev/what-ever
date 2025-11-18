@@ -1,6 +1,7 @@
 .container{
     min-height: calc(100vh - 59px);
     text-align: center;
+    padding: 0 2%;
     .card-welcome{
         background: linear-gradient(to right, var(--bg-primary), var(--bg-card-secondary));
         padding: 40px 0;
@@ -32,6 +33,36 @@
         button:hover{
             transform: scale(1.02);
             background-color: var(--btn-bg-hover);
+        }
+    }
+}
+
+@media (max-width: 1000px){
+    .container{
+        .card-welcome{
+            button{
+                font-size: 1.2rem;
+            }
+        }
+    }
+}
+
+@media (max-width: 768px){
+    .container{
+        .card-welcome{
+            h1{
+                font-size: 2rem;
+            }
+        }
+    }
+}
+
+@media (max-width: 500px){
+    .container{
+        .card-welcome{
+            button{
+                font-size: 1rem;
+            }
         }
     }
 }

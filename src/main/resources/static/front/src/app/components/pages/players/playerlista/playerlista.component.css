@@ -109,3 +109,33 @@
         }
     }
 }
+
+@media (max-width: 1000px){
+    .container{
+        .players-container{
+            .player-card{
+                width: 50%;
+                .btn-container{
+                    .actions{
+                        display: flex;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 768px){
+    .container{
+        .players-container{
+            .player-card{
+                width: 100%;
+                .btn-container{
+                    .actions{
+                        display: flex;
+                    }
+                }
+            }
+        }
+    }
+}
