@@ -29,7 +29,7 @@ public class Player {
     @Column(nullable = false, length = 50)
     private int partidas;
     
-    @Column(nullable = false)
+    @Column(nullable = false, length = 50)
     private int pontuacao;
 
 }

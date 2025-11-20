@@ -1,7 +1,6 @@
 package com.whatever.controller;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,8 +18,6 @@ import com.whatever.dto.ApiResponse;
 import com.whatever.dto.PlayerRequest;
 import com.whatever.dto.PlayerResponse;
 import com.whatever.dto.PlayerUpdateRequest;
-import com.whatever.entity.Player;
-import com.whatever.mapper.PlayerMapper;
 import com.whatever.service.IPlayerService;
 
 import jakarta.validation.Valid;
@@ -38,9 +35,7 @@ public class PlayerController {
 
     @PostMapping
     public ResponseEntity<ApiResponse<PlayerResponse>> save(@RequestBody @Valid PlayerRequest playerRequest) {
-        Player player = PlayerMapper.toModel(playerRequest);
-        Player savedPlayer = playerService.create(player);
-        PlayerResponse response = PlayerMapper.toResponse(savedPlayer);
+        PlayerResponse response = playerService.create(playerRequest);
 
         ApiResponse<PlayerResponse> apiResponse = new ApiResponse<>(
                 "Player criado com sucesso!",
@@ -51,10 +46,7 @@ public class PlayerController {
 
     @GetMapping("/findAll")
     public ResponseEntity<ApiResponse<List<PlayerResponse>>> findAll() {
-        List<Player> players = playerService.findAll();
-        List<PlayerResponse> response = players.stream()
-                .map(PlayerMapper::toResponse)
-                .collect(Collectors.toList());
+        List<PlayerResponse> response = playerService.findAll();
 
         ApiResponse<List<PlayerResponse>> apiResponse = new ApiResponse<>(
                 "Lista de players recuperada com sucesso!",
@@ -65,8 +57,7 @@ public class PlayerController {
 
     @GetMapping("/findById/{id}")
     public ResponseEntity<ApiResponse<PlayerResponse>> findById(@PathVariable Long id) {
-        Player player = playerService.findById(id);
-        PlayerResponse response = PlayerMapper.toResponse(player);
+        PlayerResponse response = playerService.findById(id);
 
         ApiResponse<PlayerResponse> apiResponse = new ApiResponse<>(
                 "Player encontrado com sucesso!",
@@ -78,9 +69,7 @@ public class PlayerController {
     @PutMapping("/update/{id}")
     public ResponseEntity<ApiResponse<PlayerResponse>> update(@PathVariable Long id,
             @RequestBody @Valid PlayerUpdateRequest updateRequest) {
-        Player player = PlayerMapper.toModel(updateRequest);
-        Player updatedPlayer = playerService.update(player, id);
-        PlayerResponse response = PlayerMapper.toResponse(updatedPlayer);
+        PlayerResponse response = playerService.update(updateRequest, id);
 
         ApiResponse<PlayerResponse> apiResponse = new ApiResponse<>(
                 "Player atualizado com sucesso!",

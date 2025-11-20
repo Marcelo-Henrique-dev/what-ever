@@ -2,17 +2,19 @@ package com.whatever.service;
 
 import java.util.List;
 
-import com.whatever.entity.Player;
+import com.whatever.dto.PlayerRequest;
+import com.whatever.dto.PlayerResponse;
+import com.whatever.dto.PlayerUpdateRequest;
 
 public interface IPlayerService {
 
-    Player create(Player player);
+    PlayerResponse create(PlayerRequest request);
 
-    List<Player> findAll();
+    List<PlayerResponse> findAll();
 
-    Player findById(Long id);
+    PlayerResponse findById(Long id);
 
-    Player update(Player player, Long id);
+    PlayerResponse update(PlayerUpdateRequest updateRequest, Long id);
 
     void delete(Long id);
 }

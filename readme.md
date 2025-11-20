@@ -1,10 +1,10 @@
 # 🎮 Whatever - Player Management API
 
-API REST para gerenciamento de jogadores desenvolvida com Spring Boot 3.5.7 e Java 21.
+API REST para gerenciamento de jogadores desenvolvida com Spring Boot 3.5.7 e Java 21, seguindo os princípios **SOLID** e boas práticas de arquitetura em camadas.
 
 ## 📋 Sobre o Projeto
 
-Sistema de gerenciamento de jogadores que permite criar, listar, atualizar e deletar informações de players, incluindo suas partidas e pontuações.
+Sistema de gerenciamento de jogadores que permite criar, listar, atualizar e deletar informações de players, incluindo suas partidas e pontuações. O projeto implementa separação de responsabilidades, injeção de dependências e padrões de projeto para garantir código limpo e manutenível.
 
 ## 🚀 Tecnologias Utilizadas
 
@@ -14,7 +14,8 @@ Sistema de gerenciamento de jogadores que permite criar, listar, atualizar e del
   - Spring Web
   - Spring Validation
   - Spring DevTools
-- **H2 Database** - Banco de dados em memória (para desenvolvimento)
+  - Spring Cache
+- **MySQL 8.0.33** - Banco de dados relacional
 - **Lombok** - Redução de código boilerplate
 - **Maven** - Gerenciamento de dependências
 
@@ -25,6 +26,7 @@ src/main/java/com/whatever/
 ├── controller/          # Controladores REST
 │   └── PlayerController.java
 ├── dto/                # Data Transfer Objects
+│   ├── ApiResponse.java
 │   ├── PlayerRequest.java
 │   ├── PlayerResponse.java
 │   └── PlayerUpdateRequest.java
@@ -35,14 +37,36 @@ src/main/java/com/whatever/
 │   └── GlobalExceptionHandler.java
 ├── mapper/             # Conversão entre DTOs e Entities
 │   └── PlayerMapper.java
-├── performance/        # Testes de performance e seeding
+├── performance/        # Performance, cache e seeding
 │   ├── WhatEverPerformance.java
-│   └── WhatEverSeeder.java
+│   ├── WhatEverSeeder.java
+│   └── PlayerSeedService.java
 ├── repository/         # Repositories JPA
 │   └── PlayerRepository.java
 └── service/            # Lógica de negócio
-    └── PlayerService.java
+    ├── IPlayerService.java
+    ├── PlayerService.java
+    ├── IPlayerPerformanceService.java
+    └── PlayerPerformanceService.java
 ```
+
+## 🎯 Princípios SOLID Aplicados
+
+### **SRP (Single Responsibility Principle)**
+- **Controllers**: Apenas gerenciam requisições HTTP
+- **Services**: Contêm toda a lógica de negócio e conversões
+- **Repositories**: Acesso exclusivo aos dados
+- **Mappers**: Transformação entre DTOs e Entidades
+
+### **OCP (Open/Closed Principle)**
+- Uso de interfaces para facilitar extensão sem modificar código existente
+
+### **DIP (Dependency Inversion Principle)**
+- Controllers e Services dependem de abstrações (interfaces)
+- Injeção de dependências via construtor
+
+### **ISP (Interface Segregation Principle)**
+- Interfaces específicas: `IPlayerService` e `IPlayerPerformanceService`
 
 ## ⚙️ Configuração
 
@@ -50,22 +74,20 @@ src/main/java/com/whatever/
 
 - Java 21 ou superior
 - Maven 3.6+ (ou usar o wrapper incluído)
+- MySQL 8.0+ instalado e rodando
 
 ### Banco de Dados
 
-O projeto utiliza **H2 Database** em memória, então **não é necessário configurar** nenhum banco de dados externo.
+O projeto utiliza **MySQL**. Configure as credenciais em `application.properties`:
 
-### Console H2
-
-Acesse o console do H2 em:
+```properties
+spring.datasource.url=jdbc:mysql://localhost:3306/quiz
+spring.datasource.username=root
+spring.datasource.password=sua_senha
+spring.jpa.hibernate.ddl-auto=create-drop
 ```
-http://localhost:8080/h2-console
-```
 
-**Credenciais:**
-- JDBC URL: `jdbc:h2:mem:whatever`
-- Username: `admin`
-- Password: `admin`
+**Nota:** O banco será recriado a cada inicialização (`create-drop`). Para manter os dados, altere para `update`
 
 ### Executando o Projeto
 
@@ -79,31 +101,33 @@ http://localhost:8080/h2-console
 ./mvnw spring-boot:run
 ```
 
-Na primeira execução, o seeder criará automaticamente 50 players de exemplo.
+A aplicação estará disponível em: `http://localhost:8081`
+
+Na primeira execução, o seeder criará automaticamente **15 players** de exemplo com dados aleatórios.
 
 ## 📡 Endpoints da API
 
 ### Base URL
 ```
-http://localhost:8080
+http://localhost:8081
 ```
 
-### Players
+### Players (CRUD Completo)
 
-| Método   | Endpoint                 | Descrição               |
-| -------- | ------------------------ | ----------------------- |
-| `POST`   | `/players`               | Criar novo player       |
-| `GET`    | `/players/findAll`       | Listar todos os players |
-| `GET`    | `/players/findById/{id}` | Buscar player por ID    |
-| `PUT`    | `/players/update/{id}`   | Atualizar player        |
-| `DELETE` | `/players/delete/{id}`   | Deletar player          |
+| Método   | Endpoint                 | Descrição               | Status Code   |
+| -------- | ------------------------ | ----------------------- | ------------- |
+| `POST`   | `/players`               | Criar novo player       | 201 (Created) |
+| `GET`    | `/players/findAll`       | Listar todos os players | 200 (OK)      |
+| `GET`    | `/players/findById/{id}` | Buscar player por ID    | 200 (OK)      |
+| `PUT`    | `/players/update/{id}`   | Atualizar player        | 200 (OK)      |
+| `DELETE` | `/players/delete/{id}`   | Deletar player          | 200 (OK)      |
 
-### Performance
+### Performance (Paginação e Cache)
 
-| Método | Endpoint                               | Descrição            |
-| ------ | -------------------------------------- | -------------------- |
-| `GET`  | `/what-ever/performance/com-paginacao` | Listar com paginação |
-| `GET`  | `/what-ever/performance/cache`         | Listar com cache     |
+| Método | Endpoint                     | Descrição                       | Status Code |
+| ------ | ---------------------------- | ------------------------------- | ----------- |
+| `GET`  | `/performance/com-paginacao` | Listar com paginação e métricas | 200 (OK)    |
+| `GET`  | `/performance/cache`         | Listar com cache (otimizado)    | 200 (OK)    |
 
 #### Parâmetros de Paginação
 
@@ -111,36 +135,36 @@ Para usar paginação, adicione os seguintes parâmetros na URL:
 
 - **`page`**: Número da página (começa em 0)
 - **`size`**: Quantidade de itens por página
-- **`sort`**: Campo para ordenação (opcional)
+- **`sort`**: Campo para ordenação seguido da direção (asc/desc)
 
 **Exemplos:**
 
 ```http
 # Primeira página com 10 itens
-GET /what-ever/performance/com-paginacao?page=0&size=10
+GET /performance/com-paginacao?page=0&size=10
 
 # Segunda página com 20 itens
-GET /what-ever/performance/com-paginacao?page=1&size=20
+GET /performance/com-paginacao?page=1&size=20
 
 # Primeira página ordenada por nome (ascendente)
-GET /what-ever/performance/com-paginacao?page=0&size=10&sort=nome,asc
+GET /performance/com-paginacao?page=0&size=10&sort=nome,asc
 
 # Primeira página ordenada por pontuação (descendente)
-GET /what-ever/performance/com-paginacao?page=0&size=10&sort=pontuacao,desc
+GET /performance/com-paginacao?page=0&size=10&sort=pontuacao,desc
 
-# Com cache - mesma estrutura
-GET /what-ever/performance/cache?page=0&size=10&sort=nome,asc
+# Com cache - mesma estrutura (performance otimizada)
+GET /performance/cache?page=0&size=10&sort=nome,asc
 ```
 
-**Resposta:**
+**Resposta da Paginação:**
 ```json
 {
   "content": [
     {
       "id": 1,
       "nome": "Player 1",
-      "partidas": 0,
-      "pontuacao": 0
+      "partidas": 5,
+      "pontuacao": 42
     }
   ],
   "pageable": {
@@ -152,8 +176,8 @@ GET /what-ever/performance/cache?page=0&size=10&sort=nome,asc
       "empty": false
     }
   },
-  "totalPages": 5,
-  "totalElements": 50,
+  "totalPages": 2,
+  "totalElements": 15,
   "last": false,
   "first": true,
   "numberOfElements": 10,
@@ -161,6 +185,8 @@ GET /what-ever/performance/cache?page=0&size=10&sort=nome,asc
   "number": 0
 }
 ```
+
+**Nota:** O endpoint `/performance/cache` exibe no console o tempo de execução da consulta, sendo mais rápido em requisições subsequentes devido ao cache.
 
 ## 📝 Exemplos de Requisições
 
@@ -237,7 +263,7 @@ PUT /players/update/1
 Content-Type: application/json
 
 {
-  "name": "Player Atualizado",
+  "nome": "Player Atualizado",
   "partidas": 15,
   "pontuacao": 150
 }
@@ -270,56 +296,182 @@ DELETE /players/delete/1
 
 ## ✅ Validações
 
-A API implementa validações automáticas nos DTOs:
+A API implementa validações automáticas nos DTOs usando Bean Validation:
 
-### Criação de Player (POST)
-- **Nome**: Obrigatório, entre 3 e 50 caracteres
+### Criação de Player (POST /players)
+- **Nome**: 
+  - Obrigatório (`@NotBlank`)
+  - Entre 3 e 50 caracteres (`@Size`)
 - **Partidas**: Iniciado automaticamente com 0
 - **Pontuação**: Iniciado automaticamente com 0
 
-### Atualização de Player (PUT)
-- **Nome**: Obrigatório, entre 3 e 50 caracteres
-- **Partidas**: Não pode ser nulo, mínimo 0
-- **Pontuação**: Não pode ser nulo, mínimo 0
+### Atualização de Player (PUT /players/update/{id})
+- **Nome**: 
+  - Obrigatório (`@NotBlank`)
+  - Entre 3 e 50 caracteres (`@Size`)
+- **Partidas**: 
+  - Não pode ser nulo (`@NotNull`)
+  - Mínimo: 0 (`@Min`)
+  - Máximo: 50 (`@Max`)
+- **Pontuação**: 
+  - Não pode ser nulo (`@NotNull`)
+  - Mínimo: 0 (`@Min`)
+  - Máximo: 50 (`@Max`)
 
 ### Exemplo de Erro de Validação
 
 **Requisição Inválida:**
 ```json
 {
-  "name": "AB"
+  "nome": "AB"
 }
 ```
 
 **Resposta (400 Bad Request):**
 ```json
 {
-  "name": "Nome deve ter entre 3 e 50 caracteres"
+  "nome": "Nome deve ter entre 3 e 50 caracteres"
+}
+```
+
+**Outro exemplo - Valores fora do limite:**
+```json
+{
+  "nome": "Player Teste",
+  "partidas": 100,
+  "pontuacao": -5
+}
+```
+
+**Resposta (400 Bad Request):**
+```json
+{
+  "partidas": "Partidas não pode ser maior que 50",
+  "pontuacao": "Pontuação não pode ser negativo"
 }
 ```
 
 ## 🔧 Funcionalidades Especiais
 
-### Seeder Automático
-- Na primeira execução, 50 players são criados automaticamente
+### 🌱 Seeder Automático
+- Na primeira execução, **15 players** são criados automaticamente com dados aleatórios
 - Verifica se já existem dados para evitar duplicação
+- Gera players com:
+  - Nomes sequenciais (Player 1, Player 2, etc.)
+  - Partidas aleatórias (0 a 50)
+  - Pontuações aleatórias (0 a 50)
+- Implementado com separação de responsabilidades usando `PlayerSeedService`
 
-### Tratamento Global de Exceções
-- Validações de entrada com mensagens personalizadas
-- Tratamento de erros de negócio (IllegalArgumentException)
-- Tratamento de recursos não encontrados (EmptyResultDataAccessException)
+### 🛡️ Tratamento Global de Exceções
+- **Validações de entrada** com mensagens personalizadas (Bean Validation)
+- **Tratamento de erros de negócio** (`IllegalArgumentException`)
+  - Jogador duplicado
+  - Nome inválido ou vazio
+  - Player não encontrado
+- **Respostas consistentes** em formato JSON padronizado
 
-### Performance
-- Endpoints para teste de performance com paginação
-- Implementação de cache para otimização de consultas
+### ⚡ Performance e Cache
+- **Endpoints dedicados** para testes de performance
+- **Medição de tempo** usando `StopWatch` do Spring
+- **Cache implementado** com Spring Cache
+  - Primeira requisição: consulta o banco
+  - Requisições seguintes: retorna do cache (muito mais rápido)
+- **Logs no console** mostrando tempo de execução
+- **Paginação nativa** do Spring Data JPA
 
-## 🏗️ Padrões Utilizados
+### 🔐 CORS Habilitado
+- Permite requisições de qualquer origem (`@CrossOrigin("*")`)
+- Ideal para desenvolvimento com frontend separado
 
+## 🏗️ Padrões e Arquitetura
+
+### Padrões de Projeto Utilizados
 - **DTO Pattern**: Separação entre entidades e objetos de transferência
-- **Mapper Pattern**: Conversão entre DTOs e Entities
+- **Mapper Pattern**: Conversão centralizada entre DTOs e Entities
 - **Repository Pattern**: Abstração de acesso a dados
-- **Service Layer**: Lógica de negócio separada dos controllers
-- **Global Exception Handler**: Tratamento centralizado de exceções
+- **Service Layer Pattern**: Lógica de negócio separada dos controllers
+- **Facade Pattern**: Controllers como fachada para os serviços
+- **Dependency Injection**: Injeção via construtor (imutabilidade)
+
+### Arquitetura em Camadas
+
+```
+┌─────────────────────────────────────────┐
+│          Controller Layer               │
+│  (Recebe requisições HTTP)              │
+└────────────────┬────────────────────────┘
+                 │
+┌────────────────▼────────────────────────┐
+│          Service Layer                  │
+│  (Lógica de negócio + Conversões)      │
+└────────────────┬────────────────────────┘
+                 │
+┌────────────────▼────────────────────────┐
+│         Repository Layer                │
+│  (Acesso aos dados - Spring Data JPA)  │
+└────────────────┬────────────────────────┘
+                 │
+┌────────────────▼────────────────────────┐
+│           Database (MySQL)              │
+└─────────────────────────────────────────┘
+```
+
+### Fluxo de Dados
+1. **Controller** recebe requisição HTTP com DTO
+2. **Service** valida, converte e aplica regras de negócio
+3. **Repository** persiste/busca dados no banco
+4. **Service** converte entidade para DTO de resposta
+5. **Controller** retorna resposta HTTP com DTO
+
+## 🧪 Testes e Qualidade
+
+### Validações Implementadas
+- ✅ Validação de campos obrigatórios
+- ✅ Validação de tamanho de strings
+- ✅ Validação de valores mínimos e máximos
+- ✅ Validação de duplicidade (nomes únicos)
+- ✅ Validação de existência (busca por ID)
+
+### Tratamento de Erros
+- ✅ Respostas HTTP apropriadas (400, 404, 500)
+- ✅ Mensagens de erro descritivas
+- ✅ Exception handling centralizado
+
+## 📊 Melhorias Aplicadas (SOLID Refactoring)
+
+### Antes vs Depois
+
+#### Controller
+**❌ Antes:**
+- Fazia conversões de DTO ↔ Entidade
+- Conhecia `PlayerMapper` diretamente
+- Dependia de `Player` (entidade)
+
+**✅ Depois:**
+- Apenas delega ao serviço
+- Trabalha exclusivamente com DTOs
+- Desacoplado da camada de entidades
+
+#### Service
+**❌ Antes:**
+- Retornava entidades JPA
+- Lógica de conversão no controller
+
+**✅ Depois:**
+- Recebe e retorna apenas DTOs
+- Centraliza conversões internamente
+- Encapsula lógica de negócio completamente
+
+#### Performance
+**❌ Antes:**
+- Controller acessava repository diretamente
+- Violava separação de responsabilidades
+- Usava `@Autowired` (field injection)
+
+**✅ Depois:**
+- Service dedicado (`PlayerPerformanceService`)
+- Injeção via construtor
+- Cache e métricas na camada correta
 
 ## 📄 Licença
 
@@ -327,9 +479,21 @@ Este é um projeto de demonstração para fins educacionais.
 
 ## 👥 Autores
 
-- **Marcelo Henrique** - Repositório Original
-- **Luanderson** - Branch develop-luanderson
+- **Marcelo Henrique** - [@Marcelo-Henrique-dev](https://github.com/Marcelo-Henrique-dev)
+- **Luanderson** - Contribuidor
+
+## 🚀 Próximas Melhorias
+
+- [ ] Implementar testes unitários e de integração
+- [ ] Adicionar documentação com Swagger/OpenAPI
+- [ ] Implementar autenticação e autorização (Spring Security)
+- [ ] Adicionar mais métricas de performance
+- [ ] Implementar soft delete
+- [ ] Adicionar filtros de busca avançados
+- [ ] Dockerizar a aplicação
 
 ---
 
-**Status do Projeto:** ✅ Em desenvolvimento - Todas as funcionalidades básicas implementadas
+**Status do Projeto:** ✅ Em produção - SOLID aplicado, arquitetura refatorada
+
+**Última atualização:** Novembro 2025

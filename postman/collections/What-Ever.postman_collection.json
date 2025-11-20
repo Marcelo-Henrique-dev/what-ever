@@ -1,0 +1,303 @@
+{
+  "info": {
+    "_postman_id": "251dec87-cbd8-44f4-bfad-1c6d4e328167",
+    "name": "What-Ever",
+    "description": "# 🎮 Whatever - Player Management API\n\nAPI REST para gerenciamento de jogadores desenvolvida com Spring Boot 3.5.7 e Java 21, seguindo os princípios **SOLID** e boas práticas de arquitetura em camadas.\n\n## 📋 Sobre o Projeto\n\nSistema de gerenciamento de jogadores que permite criar, listar, atualizar e deletar informações de players, incluindo suas partidas e pontuações. O projeto implementa separação de responsabilidades, injeção de dependências e padrões de projeto para garantir código limpo e manutenível.\n\n## 🚀 Tecnologias Utilizadas\n\n- **Java 21**\n    \n- **Spring Boot 3.5.7**\n    \n    - Spring Data JPA\n        \n    - Spring Web\n        \n    - Spring Validation\n        \n    - Spring DevTools\n        \n    - Spring Cache\n        \n- **MySQL 8.0.33** - Banco de dados relacional\n    \n- **Lombok** - Redução de código boilerplate\n    \n- **Maven** - Gerenciamento de dependências\n    \n\n## 📦 Estrutura do Projeto\n\n```\nsrc/main/java/com/whatever/\n├── controller/          # Controladores REST\n│   └── PlayerController.java\n├── dto/                # Data Transfer Objects\n│   ├── ApiResponse.java\n│   ├── PlayerRequest.java\n│   ├── PlayerResponse.java\n│   └── PlayerUpdateRequest.java\n├── entity/             # Entidades JPA\n│   └── Player.java\n├── exception/          # Tratamento de exceções\n│   ├── ErrorMessage.java\n│   └── GlobalExceptionHandler.java\n├── mapper/             # Conversão entre DTOs e Entities\n│   └── PlayerMapper.java\n├── performance/        # Performance, cache e seeding\n│   ├── WhatEverPerformance.java\n│   ├── WhatEverSeeder.java\n│   └── PlayerSeedService.java\n├── repository/         # Repositories JPA\n│   └── PlayerRepository.java\n└── service/            # Lógica de negócio\n    ├── IPlayerService.java\n    ├── PlayerService.java\n    ├── IPlayerPerformanceService.java\n    └── PlayerPerformanceService.java\n\n ```\n\n## 🎯 Princípios SOLID Aplicados\n\n### **SRP (Single Responsibility Principle)**\n\n- **Controllers**: Apenas gerenciam requisições HTTP\n    \n- **Services**: Contêm toda a lógica de negócio e conversões\n    \n- **Repositories**: Acesso exclusivo aos dados\n    \n- **Mappers**: Transformação entre DTOs e Entidades\n    \n\n### **OCP (Open/Closed Principle)**\n\n- Uso de interfaces para facilitar extensão sem modificar código existente\n    \n\n### **DIP (Dependency Inversion Principle)**\n\n- Controllers e Services dependem de abstrações (interfaces)\n    \n- Injeção de dependências via construtor\n    \n\n### **ISP (Interface Segregation Principle)**\n\n- Interfaces específicas: `IPlayerService` e `IPlayerPerformanceService`\n    \n\n## ⚙️ Configuração\n\n### Pré-requisitos\n\n- Java 21 ou superior\n    \n- Maven 3.6+ (ou usar o wrapper incluído)\n    \n- MySQL 8.0+ instalado e rodando\n    \n\n### Banco de Dados\n\nO projeto utiliza **MySQL**. Configure as credenciais em `application.properties`:\n\n``` properties\nspring.datasource.url=jdbc:mysql://localhost:3306/quiz\nspring.datasource.username=root\nspring.datasource.password=sua_senha\nspring.jpa.hibernate.ddl-auto=create-drop\n\n ```\n\n**Nota:** O banco será recriado a cada inicialização (`create-drop`). Para manter os dados, altere para `update`\n\n### Executando o Projeto\n\n**Windows:**\n\n``` bash\n.\\mvnw.cmd spring-boot:run\n\n ```\n\n**Linux/Mac:**\n\n``` bash\n./mvnw spring-boot:run\n\n ```\n\nA aplicação estará disponível em: `http://localhost:8081`\n\nNa primeira execução, o seeder criará automaticamente **15 players** de exemplo com dados aleatórios.\n\n## 📡 Endpoints da API\n\n### Base URL\n\n```\nhttp://localhost:8081\n\n ```\n\n### Players (CRUD Completo)\n\n| Método | Endpoint | Descrição | Status Code |\n| --- | --- | --- | --- |\n| `POST` | `/players` | Criar novo player | 201 (Created) |\n| `GET` | `/players/findAll` | Listar todos os players | 200 (OK) |\n| `GET` | `/players/findById/{id}` | Buscar player por ID | 200 (OK) |\n| `PUT` | `/players/update/{id}` | Atualizar player | 200 (OK) |\n| `DELETE` | `/players/delete/{id}` | Deletar player | 200 (OK) |\n\n### Performance (Paginação e Cache)\n\n| Método | Endpoint | Descrição | Status Code |\n| --- | --- | --- | --- |\n| `GET` | `/performance/com-paginacao` | Listar com paginação e métricas | 200 (OK) |\n| `GET` | `/performance/cache` | Listar com cache (otimizado) | 200 (OK) |\n\n#### Parâmetros de Paginação\n\nPara usar paginação, adicione os seguintes parâmetros na URL:\n\n- **`page`**: Número da página (começa em 0)\n    \n- **`size`**: Quantidade de itens por página\n    \n- **`sort`**: Campo para ordenação seguido da direção (asc/desc)\n    \n\n**Exemplos:**\n\n``` http\n# Primeira página com 10 itens\nGET /performance/com-paginacao?page=0&size=10\n# Segunda página com 20 itens\nGET /performance/com-paginacao?page=1&size=20\n# Primeira página ordenada por nome (ascendente)\nGET /performance/com-paginacao?page=0&size=10&sort=nome,asc\n# Primeira página ordenada por pontuação (descendente)\nGET /performance/com-paginacao?page=0&size=10&sort=pontuacao,desc\n# Com cache - mesma estrutura (performance otimizada)\nGET /performance/cache?page=0&size=10&sort=nome,asc\n\n ```\n\n**Resposta da Paginação:**\n\n``` json\n{\n  \"content\": [\n    {\n      \"id\": 1,\n      \"nome\": \"Player 1\",\n      \"partidas\": 5,\n      \"pontuacao\": 42\n    }\n  ],\n  \"pageable\": {\n    \"pageNumber\": 0,\n    \"pageSize\": 10,\n    \"sort\": {\n      \"sorted\": true,\n      \"unsorted\": false,\n      \"empty\": false\n    }\n  },\n  \"totalPages\": 2,\n  \"totalElements\": 15,\n  \"last\": false,\n  \"first\": true,\n  \"numberOfElements\": 10,\n  \"size\": 10,\n  \"number\": 0\n}\n\n ```\n\n**Nota:** O endpoint `/performance/cache` exibe no console o tempo de execução da consulta, sendo mais rápido em requisições subsequentes devido ao cache.\n\n## 📝 Exemplos de Requisições\n\n### Criar Player\n\n``` http\nPOST /players\nContent-Type: application/json\n{\n  \"nome\": \"Player Exemplo\"\n}\n\n ```\n\n**Resposta (201 Created):**\n\n``` json\n{\n  \"message\": \"Player criado com sucesso!\",\n  \"data\": {\n    \"id\": 1,\n    \"nome\": \"Player Exemplo\",\n    \"partidas\": 0,\n    \"pontuacao\": 0\n  }\n}\n\n ```\n\n### Listar Todos os Players\n\n``` http\nGET /players/findAll\n\n ```\n\n**Resposta (200 OK):**\n\n``` json\n{\n  \"message\": \"Lista de players recuperada com sucesso!\",\n  \"data\": [\n    {\n      \"id\": 1,\n      \"nome\": \"Player Exemplo\",\n      \"partidas\": 10,\n      \"pontuacao\": 100\n    },\n    {\n      \"id\": 2,\n      \"nome\": \"Player 2\",\n      \"partidas\": 5,\n      \"pontuacao\": 50\n    }\n  ]\n}\n\n ```\n\n### Buscar Player por ID\n\n``` http\nGET /players/findById/1\n\n ```\n\n**Resposta (200 OK):**\n\n``` json\n{\n  \"message\": \"Player encontrado com sucesso!\",\n  \"data\": {\n    \"id\": 1,\n    \"nome\": \"Player Exemplo\",\n    \"partidas\": 0,\n    \"pontuacao\": 0\n  }\n}\n\n ```\n\n### Atualizar Player\n\n``` http\nPUT /players/update/1\nContent-Type: application/json\n{\n  \"nome\": \"Player Atualizado\",\n  \"partidas\": 15,\n  \"pontuacao\": 150\n}\n\n ```\n\n**Resposta (200 OK):**\n\n``` json\n{\n  \"message\": \"Player atualizado com sucesso!\",\n  \"data\": {\n    \"id\": 1,\n    \"nome\": \"Player Atualizado\",\n    \"partidas\": 15,\n    \"pontuacao\": 150\n  }\n}\n\n ```\n\n### Deletar Player\n\n``` http\nDELETE /players/delete/1\n\n ```\n\n**Resposta (200 OK):**\n\n``` json\n{\n  \"message\": \"Player deletado com sucesso!\"\n}\n\n ```\n\n## ✅ Validações\n\nA API implementa validações automáticas nos DTOs usando Bean Validation:\n\n### Criação de Player (POST /players)\n\n- **Nome**:\n    \n    - Obrigatório (`@NotBlank`)\n        \n    - Entre 3 e 50 caracteres (`@Size`)\n        \n- **Partidas**: Iniciado automaticamente com 0\n    \n- **Pontuação**: Iniciado automaticamente com 0\n    \n\n### Atualização de Player (PUT /players/update/{id})\n\n- **Nome**:\n    \n    - Obrigatório (`@NotBlank`)\n        \n    - Entre 3 e 50 caracteres (`@Size`)\n        \n- **Partidas**:\n    \n    - Não pode ser nulo (`@NotNull`)\n        \n    - Mínimo: 0 (`@Min`)\n        \n    - Máximo: 50 (`@Max`)\n        \n- **Pontuação**:\n    \n    - Não pode ser nulo (`@NotNull`)\n        \n    - Mínimo: 0 (`@Min`)\n        \n    - Máximo: 50 (`@Max`)\n        \n\n### Exemplo de Erro de Validação\n\n**Requisição Inválida:**\n\n``` json\n{\n  \"nome\": \"AB\"\n}\n\n ```\n\n**Resposta (400 Bad Request):**\n\n``` json\n{\n  \"nome\": \"Nome deve ter entre 3 e 50 caracteres\"\n}\n\n ```\n\n**Outro exemplo - Valores fora do limite:**\n\n``` json\n{\n  \"nome\": \"Player Teste\",\n  \"partidas\": 100,\n  \"pontuacao\": -5\n}\n\n ```\n\n**Resposta (400 Bad Request):**\n\n``` json\n{\n  \"partidas\": \"Partidas não pode ser maior que 50\",\n  \"pontuacao\": \"Pontuação não pode ser negativo\"\n}\n\n ```\n\n## 🔧 Funcionalidades Especiais\n\n### 🌱 Seeder Automático\n\n- Na primeira execução, **15 players** são criados automaticamente com dados aleatórios\n    \n- Verifica se já existem dados para evitar duplicação\n    \n- Gera players com:\n    \n    - Nomes sequenciais (Player 1, Player 2, etc.)\n        \n    - Partidas aleatórias (0 a 10)\n        \n    - Pontuações aleatórias (0 a 50)\n        \n- Implementado com separação de responsabilidades usando `PlayerSeedService`\n    \n\n### 🛡️ Tratamento Global de Exceções\n\n- **Validações de entrada** com mensagens personalizadas (Bean Validation)\n    \n- **Tratamento de erros de negócio** (`IllegalArgumentException`)\n    \n    - Jogador duplicado\n        \n    - Nome inválido ou vazio\n        \n    - Player não encontrado\n        \n- **Respostas consistentes** em formato JSON padronizado\n    \n\n### ⚡ Performance e Cache\n\n- **Endpoints dedicados** para testes de performance\n    \n- **Medição de tempo** usando `StopWatch` do Spring\n    \n- **Cache implementado** com Spring Cache\n    \n    - Primeira requisição: consulta o banco\n        \n    - Requisições seguintes: retorna do cache (muito mais rápido)\n        \n- **Logs no console** mostrando tempo de execução\n    \n- **Paginação nativa** do Spring Data JPA\n    \n\n### 🔐 CORS Habilitado\n\n- Permite requisições de qualquer origem (`@CrossOrigin(\"\\*\")`)\n    \n- Ideal para desenvolvimento com frontend separado\n    \n\n## 🏗️ Padrões e Arquitetura\n\n### Padrões de Projeto Utilizados\n\n- **DTO Pattern**: Separação entre entidades e objetos de transferência\n    \n- **Mapper Pattern**: Conversão centralizada entre DTOs e Entities\n    \n- **Repository Pattern**: Abstração de acesso a dados\n    \n- **Service Layer Pattern**: Lógica de negócio separada dos controllers\n    \n- **Facade Pattern**: Controllers como fachada para os serviços\n    \n- **Dependency Injection**: Injeção via construtor (imutabilidade)\n    \n\n### Arquitetura em Camadas\n\n```\n┌─────────────────────────────────────────┐\n│          Controller Layer               │\n│  (Recebe requisições HTTP)              │\n└────────────────┬────────────────────────┘\n                 │\n┌────────────────▼────────────────────────┐\n│          Service Layer                  │\n│  (Lógica de negócio + Conversões)      │\n└────────────────┬────────────────────────┘\n                 │\n┌────────────────▼────────────────────────┐\n│         Repository Layer                │\n│  (Acesso aos dados - Spring Data JPA)  │\n└────────────────┬────────────────────────┘\n                 │\n┌────────────────▼────────────────────────┐\n│           Database (MySQL)              │\n└─────────────────────────────────────────┘\n\n ```\n\n### Fluxo de Dados\n\n1. **Controller** recebe requisição HTTP com DTO\n    \n2. **Service** valida, converte e aplica regras de negócio\n    \n3. **Repository** persiste/busca dados no banco\n    \n4. **Service** converte entidade para DTO de resposta\n    \n5. **Controller** retorna resposta HTTP com DTO\n    \n\n## 🧪 Testes e Qualidade\n\n### Validações Implementadas\n\n- ✅ Validação de campos obrigatórios\n    \n- ✅ Validação de tamanho de strings\n    \n- ✅ Validação de valores mínimos e máximos\n    \n- ✅ Validação de duplicidade (nomes únicos)\n    \n- ✅ Validação de existência (busca por ID)\n    \n\n### Tratamento de Erros\n\n- ✅ Respostas HTTP apropriadas (400, 404, 500)\n    \n- ✅ Mensagens de erro descritivas\n    \n- ✅ Exception handling centralizado\n    \n\n## 📊 Melhorias Aplicadas (SOLID Refactoring)\n\n### Antes vs Depois\n\n#### Controller\n\n**❌ Antes:**\n\n- Fazia conversões de DTO ↔ Entidade\n    \n- Conhecia `PlayerMapper` diretamente\n    \n- Dependia de `Player` (entidade)\n    \n\n**✅ Depois:**\n\n- Apenas delega ao serviço\n    \n- Trabalha exclusivamente com DTOs\n    \n- Desacoplado da camada de entidades\n    \n\n#### Service\n\n**❌ Antes:**\n\n- Retornava entidades JPA\n    \n- Lógica de conversão no controller\n    \n\n**✅ Depois:**\n\n- Recebe e retorna apenas DTOs\n    \n- Centraliza conversões internamente\n    \n- Encapsula lógica de negócio completamente\n    \n\n#### Performance\n\n**❌ Antes:**\n\n- Controller acessava repository diretamente\n    \n- Violava separação de responsabilidades\n    \n- Usava `@Autowired` (field injection)\n    \n\n**✅ Depois:**\n\n- Service dedicado (`PlayerPerformanceService`)\n    \n- Injeção via construtor\n    \n- Cache e métricas na camada correta\n    \n\n## 📄 Licença\n\nEste é um projeto de demonstração para fins educacionais.\n\n## 👥 Autores\n\n- **Marcelo Henrique** - [@Marcelo-Henrique-dev](https://github.com/Marcelo-Henrique-dev)\n    \n- **Luanderson** - Contribuidor\n    \n\n## 🚀 Próximas Melhorias\n\n- Implementar testes unitários e de integração\n    \n- Adicionar documentação com Swagger/OpenAPI\n    \n- Implementar autenticação e autorização (Spring Security)\n    \n- Adicionar mais métricas de performance\n    \n- Implementar soft delete\n    \n- Adicionar filtros de busca avançados\n    \n- Dockerizar a aplicação\n    \n\n---\n\n**Status do Projeto:** ✅ Em produção - SOLID aplicado, arquitetura refatorada\n\n**Última atualização:** Novembro 2025",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "48368207",
+    "_collection_link": "https://luan-arlindo20166-728314.postman.co/workspace/2982bd03-5ed3-4a1c-8bc0-cd7c95c32bfa/collection/48368207-251dec87-cbd8-44f4-bfad-1c6d4e328167?action=share&source=collection_link&creator=48368207"
+  },
+  "item": [
+    {
+      "name": "Player",
+      "item": [
+        {
+          "name": "Create",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "abe59317-3d67-42d9-8a98-acfacd2610c2",
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "id": "50417d45-24d8-44a8-a22f-b338432afc72",
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "id": "a1b69529-3ec6-44ce-b85a-db9b323c1b13",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\t\"nome\": \"Player Exemplo\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url_base}}{{url_player}}",
+              "host": [
+                "{{url_base}}{{url_player}}"
+              ]
+            },
+            "description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+          },
+          "response": []
+        },
+        {
+          "name": "FindAll",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "6672758b-8feb-4b3b-bd74-301fbc0f7491",
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "id": "8bb37cf3-1737-413a-92e4-89ec838f3964",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{url_base}}{{url_player}}/findAll",
+              "host": [
+                "{{url_base}}{{url_player}}"
+              ],
+              "path": [
+                "findAll"
+              ]
+            },
+            "description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+          },
+          "response": []
+        },
+        {
+          "name": "FindById",
+          "id": "7880a929-baa1-4f06-b0a8-f497cf97ad60",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{url_base}}{{url_player}}/findById/100",
+              "host": [
+                "{{url_base}}{{url_player}}"
+              ],
+              "path": [
+                "findById",
+                "100"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Com-Paginacao",
+          "id": "b175f0ab-909e-4379-a7b8-58646ae4143a",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{url_base}}{{url_performance}}/com-paginacao?page=1&size=20",
+              "host": [
+                "{{url_base}}{{url_performance}}"
+              ],
+              "path": [
+                "com-paginacao"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "size",
+                  "value": "20"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Cache",
+          "id": "5c2a583d-d3b8-4551-b781-62b58e0671d0",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{url_base}}{{url_performance}}cache?page=1&size=50",
+              "host": [
+                "{{url_base}}{{url_performance}}cache"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "size",
+                  "value": "50"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "b981ca2f-613f-410b-a495-1ee21e2d9328",
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "id": "99505237-4a96-4aec-841b-c01bc166669e",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Player Atualizado\",\n  \"partidas\": 15,\n  \"pontuacao\": 150\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url_base}}{{url_player}}/update/15",
+              "host": [
+                "{{url_base}}{{url_player}}"
+              ],
+              "path": [
+                "update",
+                "15"
+              ]
+            },
+            "description": "This is a PUT request and it is used to overwrite an existing piece of data. For instance, after you create an entity with a POST request, you may want to modify that later. You can do that using a PUT request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful PUT request typically returns a `200 OK`, `201 Created`, or `204 No Content` response code."
+          },
+          "response": []
+        },
+        {
+          "name": "Delete",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "49dabea1-54ba-4b6d-9f54-ede5f57022ea",
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "id": "52951236-dddc-44cb-a8b3-a3ff46ce93af",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url_base}}{{url_player}}/delete/15",
+              "host": [
+                "{{url_base}}{{url_player}}"
+              ],
+              "path": [
+                "delete",
+                "15"
+              ]
+            },
+            "description": "This is a DELETE request, and it is used to delete data that was previously created via a POST request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful DELETE request typically returns a `200 OK`, `202 Accepted`, or `204 No Content` response code."
+          },
+          "response": []
+        }
+      ],
+      "id": "f07af3b2-eef3-4344-8a3e-ec351f66f165"
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "id": "52bcf0d4-faf2-45ea-ba62-9840770e6a41",
+        "type": "text/javascript",
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "id": "78fe0220-a369-473f-8a58-61210aac5706",
+        "type": "text/javascript",
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "id": "12275801-2b0f-4dde-873d-e40610551e5e",
+      "key": "url_base",
+      "value": "http://localhost:8081"
+    },
+    {
+      "id": "c30f5eb8-cda4-4f4d-862d-3623f6af2e17",
+      "key": "url_player",
+      "value": "/players",
+      "type": "string"
+    },
+    {
+      "id": "f6ac39e6-988f-4f7f-9180-616081f5f94d",
+      "key": "url_performance",
+      "value": "/performance",
+      "type": "string"
+    }
+  ]
+}

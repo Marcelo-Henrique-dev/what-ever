@@ -8,7 +8,7 @@ import com.whatever.entity.Player;
 public class PlayerMapper {
 
     private PlayerMapper() {
-        
+
     }
 
     public static PlayerResponse toResponse(Player player) {
